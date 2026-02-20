@@ -23,15 +23,6 @@ const allProducts = [
   { title: "Bibimbap Rice Bowl", price: "27.09", image: bibimbap, barcode: "BIBIM6789", desc: "Korean Style" },
   { title: "Golden Beef Rice Bowl", price: "27.09", image: beef, barcode: "GBEEF345678", desc: "Tender Beef" },
   { title: "Thai Rice Bowl", price: "27.09", image: thai, barcode: "THAI3RD901", desc: "Spicy Thai Style" },
-  { title: "Smoke Salmon Rice Bowl", price: "27.09", image: salmon, barcode: "SALM3RD234", desc: "With Fresh Salmon" },
-  { title: "Healthy Rice Bowl", price: "27.09", image: healthy, barcode: "HEALTH5678", desc: "Quinoa Base" },
-  { title: "Bibimbap Rice Bowl", price: "27.09", image: bibimbap, barcode: "BIBIM9012", desc: "Korean Style" },
-  { title: "Golden Beef Rice Bowl", price: "27.09", image: beef, barcode: "GBEEF789123", desc: "Tender Beef" },
-  { title: "Thai Rice Bowl", price: "27.09", image: thai, barcode: "THAI4TH567", desc: "Spicy Thai Style" },
-  { title: "Smoke Salmon Rice Bowl", price: "27.09", image: salmon, barcode: "SALM4TH890", desc: "With Fresh Salmon" },
-  { title: "Healthy Rice Bowl", price: "27.09", image: healthy, barcode: "HEALTH9012", desc: "Quinoa Base" },
-  { title: "Bibimbap Rice Bowl", price: "27.09", image: bibimbap, barcode: "BIBIM3456", desc: "Korean Style" },
-  { title: "Golden Beef Rice Bowl", price: "27.09", image: beef, barcode: "GBEEF567890", desc: "Tender Beef" },
 ];
 
 const POSLayout = () => {
@@ -106,7 +97,7 @@ const POSLayout = () => {
             </div>
 
             {/* Order Summary - Fixed width on larger screens, full width on mobile */}
-            <div className="lg:w-80 xl:w-96 flex-shrink-0">
+            <div className="lg:w-70 xl:w-90 flex-shrink-0">
               <OrderSummary 
                 scannedBarcode={scannedBarcode}
                 onBarcodeProcessed={handleBarcodeProcessed}

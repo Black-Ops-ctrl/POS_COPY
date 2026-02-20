@@ -103,16 +103,16 @@ const TopBar = ({ searchTerm, setSearchTerm, onSearch, onBarcodeScanned, onEnter
 
       {/* User Info - Fixed */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        <img
-          src={avatar}
-          alt="avatar"
-          className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full object-cover border-2 border-gray-200"
-        />
-        <div className="text-right hidden xs:block">
-          <p className="font-semibold text-sm sm:text-base whitespace-nowrap">Lauren Smith</p>
-          <p className="text-xs text-gray-400 whitespace-nowrap">Cashier</p>
-        </div>
+      <img
+        src={avatar}
+        alt="avatar"
+        className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full object-cover border-2 border-gray-200"
+      />
+      <div className="text-right hidden sm:block">
+        <p className="font-semibold text-sm sm:text-base whitespace-nowrap">Lauren Smith</p>
+        <p className="text-xs text-gray-400 whitespace-nowrap">Cashier</p>
       </div>
+    </div>
     </div>
   );
 };

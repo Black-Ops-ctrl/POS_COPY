@@ -21,13 +21,6 @@ const allProducts = [
   { title: "Thai Rice Bowl", price: "27.09", image: thai, barcode: "THAI3RD901", desc: "Spicy Thai Style" },
   { title: "Smoke Salmon Rice Bowl", price: "27.09", image: salmon, barcode: "SALM3RD234", desc: "With Fresh Salmon" },
   { title: "Healthy Rice Bowl", price: "27.09", image: healthy, barcode: "HEALTH5678", desc: "Quinoa Base" },
-  { title: "Bibimbap Rice Bowl", price: "27.09", image: bibimbap, barcode: "BIBIM9012", desc: "Korean Style" },
-  { title: "Golden Beef Rice Bowl", price: "27.09", image: beef, barcode: "GBEEF789123", desc: "Tender Beef" },
-  { title: "Thai Rice Bowl", price: "27.09", image: thai, barcode: "THAI4TH567", desc: "Spicy Thai Style" },
-  { title: "Smoke Salmon Rice Bowl", price: "27.09", image: salmon, barcode: "SALM4TH890", desc: "With Fresh Salmon" },
-  { title: "Healthy Rice Bowl", price: "27.09", image: healthy, barcode: "HEALTH9012", desc: "Quinoa Base" },
-  { title: "Bibimbap Rice Bowl", price: "27.09", image: bibimbap, barcode: "BIBIM3456", desc: "Korean Style" },
-  { title: "Golden Beef Rice Bowl", price: "27.09", image: beef, barcode: "GBEEF567890", desc: "Tender Beef" },
 ];
 
 const ProductGrid = ({ onProductSelect, searchTerm }) => {
@@ -67,7 +60,7 @@ const ProductGrid = ({ onProductSelect, searchTerm }) => {
             <p className="text-gray-500 text-sm">No Products Found "{searchTerm}"</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
             {filteredProducts.map((item, index) => (
               <ProductCard 
                 key={item.barcode || index}

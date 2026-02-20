@@ -11,7 +11,7 @@ const ProductCard = ({ image, title, price, desc, barcode, onProductClick }) => 
   return (
     <div
       onClick={handleClick}
-      className="bg-gray-50 rounded-xl p-3 shadow-sm hover:shadow-md transition-all cursor-pointer hover:scale-[1.02] active:scale-[0.98] border border-gray-100 hover:border-red-200"
+      className="bg-gray-50 rounded-xl p-3 shadow-sm hover:shadow-md transition-all cursor-pointer border border-gray-100"
     >
       <img
         src={image}

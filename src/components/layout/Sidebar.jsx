@@ -10,75 +10,75 @@ const Sidebar = () => {
       /* Mobile (default) - horizontal top bar */
       w-full h-auto
       flex flex-row items-center justify-between
-      py-2 px-4
+      py-1.5 px-3
       rounded-t-xl
       
       /* Small screens */
-      sm:py-2 sm:px-5
+      sm:py-2 sm:px-4
       
       /* Medium screens */
-      md:py-3 md:px-6
+      md:py-2 md:px-5
       
       /* Large screens - vertical sidebar */
-      lg:flex-col lg:w-20 lg:h-full
-      lg:justify-start lg:py-8 lg:px-0
+      lg:flex-col lg:w-16 lg:h-full
+      lg:justify-start lg:py-4 lg:px-0
       lg:rounded-l-2xl lg:rounded-t-none
       
       /* Extra large screens */
-      xl:w-24
+      xl:w-20 xl:py-5
       
       /* 2XL screens */
-      2xl:w-28
+      2xl:w-24 2xl:py-6
     ">
       {/* Logo */}
       <div className="
         text-red-500 font-bold
-        text-xl sm:text-2xl md:text-3xl
-        lg:mb-8 lg:text-2xl
-        xl:mb-10 xl:text-3xl
-        2xl:mb-12 2xl:text-4xl
+        text-lg sm:text-xl md:text-2xl
+        lg:mb-6 lg:text-xl
+        xl:mb-8 xl:text-2xl
+        2xl:mb-10 2xl:text-3xl
       ">
         ◎
       </div>
       
       {/* Navigation Icons Container */}
       <div className="
-        flex flex-row items-center gap-4
-        sm:gap-6 md:gap-8
-        lg:flex-col lg:gap-6 lg:flex-1
-        xl:gap-8
-        2xl:gap-10
+        flex flex-row items-center gap-3
+        sm:gap-4 md:gap-5
+        lg:flex-col lg:gap-4 lg:flex-1
+        xl:gap-5
+        2xl:gap-6
       ">
         <Home className="
           text-gray-400 hover:text-red-500 cursor-pointer transition-colors
-          w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7
-          lg:w-6 lg:h-6
-          xl:w-7 xl:h-7
-          2xl:w-8 2xl:h-8
+          w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5
+          lg:w-5 lg:h-5
+          xl:w-6 xl:h-6
+          2xl:w-6 2xl:h-6
         " />
         
         <Grid className="
           text-gray-400 hover:text-red-500 cursor-pointer transition-colors
-          w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7
-          lg:w-6 lg:h-6
-          xl:w-7 xl:h-7
-          2xl:w-8 2xl:h-8
+          w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5
+          lg:w-5 lg:h-5
+          xl:w-6 xl:h-6
+          2xl:w-6 2xl:h-6
         " />
         
         <ShoppingCart className="
           text-gray-400 hover:text-red-500 cursor-pointer transition-colors
-          w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7
-          lg:w-6 lg:h-6
-          xl:w-7 xl:h-7
-          2xl:w-8 2xl:h-8
+          w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5
+          lg:w-5 lg:h-5
+          xl:w-6 xl:h-6
+          2xl:w-6 2xl:h-6
         " />
         
         <Settings className="
           text-gray-400 hover:text-red-500 cursor-pointer transition-colors
-          w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7
-          lg:w-6 lg:h-6 lg:mt-auto
-          xl:w-7 xl:h-7
-          2xl:w-8 2xl:h-8
+          w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5
+          lg:w-5 lg:h-5 lg:mt-auto
+          xl:w-6 xl:h-6
+          2xl:w-6 2xl:h-6
         " />
       </div>
     </div>
