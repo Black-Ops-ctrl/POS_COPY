@@ -15,6 +15,7 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const scrollContainerRef = useRef(null);
 
+  // Complete product database with all 20 items
   const productDatabase = {
     "M-MARK2212010015": { 
       id: 1, 
@@ -158,18 +159,20 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
     },
   };
 
+  // Auto-scroll to bottom when new items added
   useEffect(() => {
     if (scrollContainerRef.current && cartItems.length > 0) {
       scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
     }
   }, [cartItems.length]);
 
+  // Handle scanned barcode
   useEffect(() => {
     if (scannedBarcode && productDatabase[scannedBarcode]) {
       addToCart(productDatabase[scannedBarcode]);
       onBarcodeProcessed(); 
     }
-  }, [scannedBarcode]);
+  }, [scannedBarcode, onBarcodeProcessed]);
 
   const addToCart = (product) => {
     setCartItems((prev) => {
@@ -194,7 +197,11 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
 
   const handleSelect = (barcode) => {
     setCartItems((prev) =>
-      prev.map((item) => (item.barcode === barcode ? { ...item, selected: !item.selected } : item))
+      prev.map((item) => 
+        item.barcode === barcode 
+          ? { ...item, selected: !item.selected } 
+          : item
+      )
     );
   };
 
@@ -218,17 +225,6 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
       )
     );
   };
-
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-
-  const parsedDiscount = discountPercentage === "" ? 0 : parseFloat(discountPercentage) || 0;
-  const discountAmount = (subtotal * parsedDiscount) / 100;
-
-  const isAnySelected = cartItems.some((item) => item.selected);
-  const isAllSelected = cartItems.length > 0 && cartItems.every((item) => item.selected);
 
   const handleReceivedAmountChange = (e) => {
     const value = e.target.value;
@@ -254,10 +250,21 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
     setPaymentMethod(method);
   };
 
+  // Calculations
+  const subtotal = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+
+  const parsedDiscount = discountPercentage === "" ? 0 : parseFloat(discountPercentage) || 0;
+  const discountAmount = (subtotal * parsedDiscount) / 100;
   const tax = 1.99;
   const totalAfterDiscount = subtotal - discountAmount;
   const totalAmount = totalAfterDiscount + tax;
   const payback = receivedAmount && parseFloat(receivedAmount) - totalAmount;
+
+  const isAnySelected = cartItems.some((item) => item.selected);
+  const isAllSelected = cartItems.length > 0 && cartItems.every((item) => item.selected);
 
   const generateInvoiceNo = () => {
     return `INV-${Date.now().toString().slice(-8)}`;
@@ -289,82 +296,82 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
   };
 
   return (
-    <div className="w-full md:w-[280px] lg:w-[300px] xl:w-[340px] bg-gray-50 border-l p-2 flex flex-col h-full overflow-hidden">
-      {/* Header with Delete Button */}
-      <div className="flex justify-between items-center mb-2 flex-shrink-0">
-        <h2 className="font-semibold text-sm truncate">
-          Cart Items ({cartItems.length})
-        </h2>
+    <div className="bg-gray-50 rounded-xl h-full flex flex-col overflow-hidden border border-gray-200">
+      {/* Header */}
+      <div className="p-4 border-b border-gray-200 bg-white">
+        <div className="flex justify-between items-center">
+          <h2 className="font-semibold text-gray-800">
+            Cart Items ({cartItems.length})
+          </h2>
+          <button
+            onClick={handleDelete}
+            disabled={!isAnySelected}
+            className={`p-2 rounded-lg transition-colors ${
+              isAnySelected 
+                ? "hover:bg-red-50 text-red-500" 
+                : "opacity-30 cursor-not-allowed"
+            }`}
+          >
+            <img src={deleteIcon} alt="delete" className="w-5 h-5" />
+          </button>
+        </div>
 
-        <button
-          onClick={handleDelete}
-          disabled={!isAnySelected}
-          className={`p-1 rounded-md transition flex-shrink-0 ${isAnySelected ? "" : "opacity-30 cursor-not-allowed"}`}
-        >
-          <img src={deleteIcon} alt="delete" className="w-5 h-5" />
-        </button>
+        {cartItems.length > 0 && (
+          <div className="flex items-center gap-2 mt-3">
+            <input
+              type="checkbox"
+              checked={isAllSelected}
+              onChange={handleSelectAll}
+              className="w-4 h-4 accent-red-500 cursor-pointer rounded"
+            />
+            <span className="text-sm text-gray-600">Select All</span>
+          </div>
+        )}
       </div>
 
-      {/* Select All Checkbox */}
-      {cartItems.length > 0 && (
-        <div className="flex items-center gap-1.5 mb-2 pl-1 flex-shrink-0">
-          <input
-            type="checkbox"
-            checked={isAllSelected}
-            onChange={handleSelectAll}
-            className="w-3.5 h-3.5 accent-redColor cursor-pointer flex-shrink-0"
-          />
-          <span className="font-sans font-semibold text-xs">Select All</span>
-        </div>
-      )}
-
-      {/* Scrollable Product Items with auto-scroll */}
+      {/* Scrollable Items */}
       <div 
         ref={scrollContainerRef}
-        className="space-y-2 overflow-y-auto flex-1 min-h-0 pr-1 pl-1 scroll-smooth"
+        className="flex-1 overflow-y-auto p-4 space-y-3"
       >
         {cartItems.length === 0 ? (
-          <p className="text-center text-greyColor py-4 text-sm">
-            Empty Cart.
+          <p className="text-center text-gray-500 py-8 text-sm">
+            Your cart is empty
           </p>
         ) : (
           cartItems.map((item) => (
-            <div key={item.barcode} className="flex items-center gap-1.5">
+            <div key={item.barcode} className="flex items-start gap-3 bg-white p-3 rounded-lg shadow-sm">
               <input
                 type="checkbox"
                 checked={item.selected}
                 onChange={() => handleSelect(item.barcode)}
-                className="w-3.5 h-3.5 accent-red-500 cursor-pointer flex-shrink-0"
+                className="w-4 h-4 accent-red-500 cursor-pointer rounded mt-1"
               />
               <img 
                 src={item.image} 
                 alt={item.title} 
-                className="w-10 h-10 rounded-lg object-cover flex-shrink-0" 
+                className="w-12 h-12 rounded-lg object-cover flex-shrink-0" 
               />
               <div className="flex-1 min-w-0">
-                <p className="font-sans font-semibold text-xs mb-0.5 truncate">
-                  {item.title}
-                </p>
-                <p className="text-[10px] text-gray-400 truncate">
-                  {item.desc}
-                </p>
+                <p className="font-medium text-sm truncate">{item.title}</p>
+                <p className="text-xs text-gray-500 truncate">{item.desc}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <button
+                    onClick={() => handleQuantityChange(item.barcode, -1)}
+                    className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 text-sm"
+                  >
+                    -
+                  </button>
+                  <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
+                  <button
+                    onClick={() => handleQuantityChange(item.barcode, 1)}
+                    className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 text-sm"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-0.5 flex-shrink-0">
-                <button
-                  onClick={() => handleQuantityChange(item.barcode, -1)}
-                  className="w-5 h-5 bg-gray-200 rounded-full flex justify-center items-center hover:bg-gray-300 text-xs"
-                >
-                  -
-                </button>
-                <span className="font-semibold text-xs w-4 text-center">{item.quantity}</span>
-                <button
-                  onClick={() => handleQuantityChange(item.barcode, 1)}
-                  className="w-5 h-5 bg-gray-200 rounded-full flex justify-center items-center hover:bg-gray-300 text-xs"
-                >
-                  +
-                </button>
-              </div>
-              <p className="font-semibold font-sans text-blackColor text-xs w-14 text-right flex-shrink-0">
+              <p className="font-bold text-red-500 text-sm whitespace-nowrap">
                 ${(item.price * item.quantity).toFixed(2)}
               </p>
             </div>
@@ -374,111 +381,101 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
 
       {/* Billing Section */}
       {cartItems.length > 0 && (
-        <div className="mt-auto pt-3 pr-1 pl-1 border-t border-gray-200">
-          {/* Tax */}
-          <div className="flex justify-between text-xs font-semibold mb-1">
-            <span>Tax</span>
-            <span>${tax.toFixed(2)}</span>
+        <div className="p-4 border-t border-gray-200 bg-white space-y-3">
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Subtotal</span>
+              <span className="font-medium">${subtotal.toFixed(2)}</span>
+            </div>
+            
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-gray-600">Discount</span>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={discountPercentage}
+                  onChange={handleDiscountChange}
+                  onBlur={handleDiscountBlur}
+                  className="w-12 p-1 border border-gray-300 rounded text-center text-sm"
+                  placeholder="2"
+                />
+                <span className="text-red-500 text-sm font-medium">
+                  -${discountAmount.toFixed(2)}
+                </span>
+              </div>
+            </div>
+            
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Tax</span>
+              <span className="font-medium">${tax.toFixed(2)}</span>
+            </div>
+            
+            <div className="border-t border-gray-200 pt-2 mt-2">
+              <div className="flex justify-between font-bold">
+                <span>Total</span>
+                <span className="text-red-500">${totalAmount.toFixed(2)}</span>
+              </div>
+            </div>
           </div>
-          <div className="border-b border-red-300 my-1"></div>
 
-          {/* Subtotal */}
-          <div className="flex justify-between text-xs font-semibold mb-1">
-            <span>Subtotal</span>
-            <span>${subtotal.toFixed(2)}</span>
-          </div>
-          <div className="border-b border-red-300 my-1"></div>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Payment</span>
+              <div className="flex gap-3">
+                <label className="flex items-center gap-1 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cash"
+                    checked={paymentMethod === "cash"}
+                    onChange={() => handlePaymentMethodChange("cash")}
+                    className="accent-red-500"
+                  />
+                  <span className="text-sm">Cash</span>
+                </label>
+                <label className="flex items-center gap-1 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="card"
+                    checked={paymentMethod === "card"}
+                    onChange={() => handlePaymentMethodChange("card")}
+                    className="accent-red-500"
+                  />
+                  <span className="text-sm">Card</span>
+                </label>
+              </div>
+            </div>
 
-          {/* Discount */}
-          <div className="flex justify-between items-center text-xs font-semibold mb-1">
-            <span className="whitespace-nowrap">Discount ({parsedDiscount}%)</span>
-            <div className="flex items-center gap-1 ml-1">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-600">Received</span>
               <input
-                type="text"
-                value={discountPercentage}
-                onChange={handleDiscountChange}
-                onBlur={handleDiscountBlur}
-                className="w-10 p-0.5 border border-red-300 rounded-md text-center text-xs"
-                placeholder="2"
+                type="number"
+                value={receivedAmount}
+                onChange={handleReceivedAmountChange}
+                className="w-24 p-1.5 border border-gray-300 rounded text-sm text-right"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
               />
-              <span className="text-red-500 text-xs whitespace-nowrap">
-                -${discountAmount.toFixed(2)}
-              </span>
             </div>
-          </div>
-          <div className="border-b border-red-300 my-1"></div>
 
-          {/* Total Amount */}
-          <div className="flex justify-between font-semibold text-xs mt-1">
-            <span>Total Amount</span>
-            <span>${totalAmount.toFixed(2)}</span>
-          </div>
-          <div className="border-b border-red-300 my-1"></div>
-
-          {/* Payment Method */}
-          <div className="flex justify-between items-center font-semibold text-xs mt-1">
-            <span>Payment Method</span>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="cash"
-                  checked={paymentMethod === "cash"}
-                  onChange={() => handlePaymentMethodChange("cash")}
-                  className="accent-red-500 w-3 h-3"
-                />
-                <span className="text-xs">Cash</span>
-              </label>
-              <label className="flex items-center gap-0.5 cursor-pointer">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="card"
-                  checked={paymentMethod === "card"}
-                  onChange={() => handlePaymentMethodChange("card")}
-                  className="accent-red-500 w-3 h-3"
-                />
-                <span className="text-xs">Card</span>
-              </label>
-            </div>
-          </div>
-          <div className="border-b border-red-300 my-1"></div>
-
-          {/* Received Amount */}
-          <div className="flex justify-between items-center font-semibold text-xs mt-1">
-            <span>Received Amount</span>
-            <input
-              type="number"
-              value={receivedAmount}
-              onChange={handleReceivedAmountChange}
-              className="w-16 p-0.5 border border-red-300 rounded-md text-xs"
-              min="0"
-              step="0.01"
-            />
-          </div>
-          <div className="border-b border-red-300 my-1"></div>
-
-          {/* Payback */}
-          {receivedAmount && payback !== undefined && (
-            <>
-              <div className="flex justify-between font-semibold text-xs mt-1">
-                <span>Payback</span>
-                <span className={payback < 0 ? "text-red-500" : "text-green-500"}>
+            {receivedAmount && payback !== undefined && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Change</span>
+                <span className={payback < 0 ? "text-red-500" : "text-green-600 font-medium"}>
                   ${payback.toFixed(2)}
                 </span>
               </div>
-              <div className="border-b border-red-300 my-1"></div>
-            </>
-          )}
+            )}
 
-          {/* Print Button */}
-          <button 
-            onClick={handlePrint}
-            className="w-full bg-red-500 text-white py-2 rounded-lg mt-2 hover:bg-red-600 transition text-sm"
-          >
-            Print Receipt
-          </button>
+            <button 
+              onClick={handlePrint}
+              className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors font-medium mt-2"
+            >
+              Print Receipt
+            </button>
+          </div>
         </div>
       )}
     </div>

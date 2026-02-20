@@ -38,31 +38,26 @@ const POSLayout = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [scannedBarcode, setScannedBarcode] = useState(null);
 
-  // Handle barcode scan from TopBar
   const handleBarcodeScanned = (barcode) => {
     console.log("Barcode scanned in POSLayout:", barcode);
     setScannedBarcode(barcode);
-    setSearchTerm(""); // Clear search term after scanning
+    setSearchTerm("");
   };
 
-  // Handle product selection from grid
   const handleProductSelect = (barcode) => {
     console.log("Product selected with barcode:", barcode);
     setScannedBarcode(barcode);
   };
 
-  // Handle search
   const handleSearch = (term) => {
     console.log("Search term:", term);
     setSearchTerm(term);
   };
 
-  // Optional: Handle Enter key to auto-select first product
   const handleEnterPress = (searchTerm) => {
     if (!searchTerm.trim()) return;
     
     const term = searchTerm.toLowerCase().trim();
-    // Find the first product that matches the search
     const matchedProduct = allProducts.find(product => 
       product.title.toLowerCase().includes(term) ||
       (product.barcode && product.barcode.toLowerCase().includes(term)) ||
@@ -72,68 +67,25 @@ const POSLayout = () => {
     if (matchedProduct) {
       console.log("Enter pressed - auto-selecting product:", matchedProduct.title);
       setScannedBarcode(matchedProduct.barcode);
-      setSearchTerm(""); // Clear search after selection
+      setSearchTerm("");
     }
   };
 
-  // Clear scanned barcode after processing
   const handleBarcodeProcessed = () => {
     console.log("Barcode processed");
     setScannedBarcode(null);
   };
 
   return (
-    <div className="
-      h-screen 
-      bg-rose-100 
-      p-1 
-      xs:p-1.5 
-      sm:p-2 
-      md:p-3 
-      lg:p-4 
-      xl:p-5 
-      2xl:p-6 
-      overflow-hidden
-    ">
-      <div className="
-        bg-white 
-        rounded-lg 
-        xs:rounded-lg 
-        sm:rounded-xl 
-        md:rounded-2xl 
-        lg:rounded-3xl 
-        xl:rounded-3xl 
-        2xl:rounded-3xl 
-        shadow-xl 
-        h-full 
-        flex 
-        flex-col 
-        lg:flex-row 
-        overflow-hidden
-      ">
+    <div className="h-screen bg-rose-50 p-2 sm:p-3 md:p-4 overflow-hidden">
+      <div className="bg-white rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl h-full flex flex-col lg:flex-row overflow-hidden">
+        {/* Sidebar - Fixed for all screens */}
         <Sidebar />
 
-        <div className="
-          flex-1 
-          flex 
-          flex-col 
-          lg:flex-row 
-          overflow-hidden
-        ">
-          {/* Main Content Area */}
-          <div className="
-            flex-1 
-            p-2 
-            xs:p-2.5 
-            sm:p-3 
-            md:p-4 
-            lg:p-5 
-            xl:p-6 
-            2xl:p-8 
-            overflow-y-auto 
-            order-2 
-            lg:order-1
-          ">
+        {/* Main Content Area - Takes remaining space */}
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* TopBar Section */}
+          <div className="p-3 sm:p-4 md:p-5 pb-2 md:pb-3">
             <TopBar 
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -141,32 +93,25 @@ const POSLayout = () => {
               onBarcodeScanned={handleBarcodeScanned}
               onEnterPress={handleEnterPress}
             />
-            <ProductGrid 
-              onProductSelect={handleProductSelect}
-              searchTerm={searchTerm}
-            />
           </div>
-          
-          {/* Order Summary - Full width on mobile, fixed width on desktop */}
-          <div className="
-            w-full 
-            xs:w-full 
-            sm:w-full 
-            md:w-full 
-            lg:w-auto 
-            xl:w-auto 
-            2xl:w-auto 
-            order-1 
-            lg:order-2 
-            border-b 
-            lg:border-b-0 
-            lg:border-l 
-            border-gray-200
-          ">
-            <OrderSummary 
-              scannedBarcode={scannedBarcode}
-              onBarcodeProcessed={handleBarcodeProcessed}
-            />
+
+          {/* Product Grid and Order Summary - Flex row on larger screens */}
+          <div className="flex-1 flex flex-col lg:flex-row min-h-0 px-3 sm:px-4 md:px-5 pb-3 sm:pb-4 md:pb-5 gap-4">
+            {/* Product Grid - Takes remaining space */}
+            <div className="flex-1 min-h-0 min-w-0">
+              <ProductGrid 
+                onProductSelect={handleProductSelect}
+                searchTerm={searchTerm}
+              />
+            </div>
+
+            {/* Order Summary - Fixed width on larger screens, full width on mobile */}
+            <div className="lg:w-80 xl:w-96 flex-shrink-0">
+              <OrderSummary 
+                scannedBarcode={scannedBarcode}
+                onBarcodeProcessed={handleBarcodeProcessed}
+              />
+            </div>
           </div>
         </div>
       </div>
