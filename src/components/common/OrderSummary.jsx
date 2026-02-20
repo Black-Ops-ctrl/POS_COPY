@@ -289,7 +289,7 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
   };
 
   return (
-    <div className="w-full max-w-full md:max-w-[420px] bg-gray-50 border-l p-2 xs:p-2 sm:p-2.5 md:p-3 flex flex-col h-full overflow-hidden">
+    <div className="w-full max-w-full md:max-w-[360px] bg-gray-50 border-l p-2 xs:p-2 sm:p-2.5 md:p-3 flex flex-col h-full overflow-hidden">
       {/* Header with Delete Button */}
       <div className="flex justify-between items-center mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 flex-shrink-0">
         <h2 className="font-semibold text-xs xs:text-sm sm:text-sm md:text-base truncate">
