@@ -289,82 +289,82 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
   };
 
   return (
-    <div className="w-full max-w-full md:max-w-[360px] bg-gray-50 border-l p-2 xs:p-2 sm:p-2.5 md:p-3 flex flex-col h-full overflow-hidden">
+    <div className="w-full md:w-[280px] lg:w-[300px] xl:w-[340px] bg-gray-50 border-l p-2 flex flex-col h-full overflow-hidden">
       {/* Header with Delete Button */}
-      <div className="flex justify-between items-center mb-2 xs:mb-2.5 sm:mb-3 md:mb-4 flex-shrink-0">
-        <h2 className="font-semibold text-xs xs:text-sm sm:text-sm md:text-base truncate">
+      <div className="flex justify-between items-center mb-2 flex-shrink-0">
+        <h2 className="font-semibold text-sm truncate">
           Cart Items ({cartItems.length})
         </h2>
 
         <button
           onClick={handleDelete}
           disabled={!isAnySelected}
-          className={`p-1 xs:p-1 sm:p-1.5 md:p-2 rounded-md transition flex-shrink-0 ${isAnySelected ? "" : "opacity-30 cursor-not-allowed"}`}
+          className={`p-1 rounded-md transition flex-shrink-0 ${isAnySelected ? "" : "opacity-30 cursor-not-allowed"}`}
         >
-          <img src={deleteIcon} alt="delete" className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+          <img src={deleteIcon} alt="delete" className="w-5 h-5" />
         </button>
       </div>
 
       {/* Select All Checkbox */}
       {cartItems.length > 0 && (
-        <div className="flex items-center gap-1.5 xs:gap-1.5 sm:gap-2 mb-2 xs:mb-2 sm:mb-2.5 md:mb-3 pl-1 flex-shrink-0">
+        <div className="flex items-center gap-1.5 mb-2 pl-1 flex-shrink-0">
           <input
             type="checkbox"
             checked={isAllSelected}
             onChange={handleSelectAll}
-            className="w-3 h-3 xs:w-3 xs:h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 accent-redColor cursor-pointer flex-shrink-0"
+            className="w-3.5 h-3.5 accent-redColor cursor-pointer flex-shrink-0"
           />
-          <span className="font-sans font-semibold text-[10px] xs:text-xs sm:text-xs md:text-sm">Select All</span>
+          <span className="font-sans font-semibold text-xs">Select All</span>
         </div>
       )}
 
       {/* Scrollable Product Items with auto-scroll */}
       <div 
         ref={scrollContainerRef}
-        className="space-y-2 xs:space-y-2 sm:space-y-2.5 md:space-y-3 overflow-y-auto flex-1 min-h-0 pr-1 xs:pr-1 sm:pr-1.5 md:pr-2 pl-1 scroll-smooth"
+        className="space-y-2 overflow-y-auto flex-1 min-h-0 pr-1 pl-1 scroll-smooth"
       >
         {cartItems.length === 0 ? (
-          <p className="text-center text-greyColor py-4 xs:py-5 sm:py-6 md:py-8 text-xs xs:text-sm sm:text-sm md:text-base">
+          <p className="text-center text-greyColor py-4 text-sm">
             Empty Cart.
           </p>
         ) : (
           cartItems.map((item) => (
-            <div key={item.barcode} className="flex items-center gap-1.5 xs:gap-1.5 sm:gap-2 md:gap-2.5">
+            <div key={item.barcode} className="flex items-center gap-1.5">
               <input
                 type="checkbox"
                 checked={item.selected}
                 onChange={() => handleSelect(item.barcode)}
-                className="w-3 h-3 xs:w-3 xs:h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 accent-red-500 cursor-pointer flex-shrink-0"
+                className="w-3.5 h-3.5 accent-red-500 cursor-pointer flex-shrink-0"
               />
               <img 
                 src={item.image} 
                 alt={item.title} 
-                className="w-8 h-8 xs:w-8 xs:h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg object-cover flex-shrink-0" 
+                className="w-10 h-10 rounded-lg object-cover flex-shrink-0" 
               />
               <div className="flex-1 min-w-0">
-                <p className="font-sans font-semibold text-[10px] xs:text-xs sm:text-xs md:text-sm mb-0.5 truncate">
+                <p className="font-sans font-semibold text-xs mb-0.5 truncate">
                   {item.title}
                 </p>
-                <p className="text-[8px] xs:text-[10px] sm:text-[10px] md:text-xs text-gray-400 truncate">
+                <p className="text-[10px] text-gray-400 truncate">
                   {item.desc}
                 </p>
               </div>
-              <div className="flex items-center gap-0.5 xs:gap-0.5 sm:gap-1 md:gap-1.5 flex-shrink-0">
+              <div className="flex items-center gap-0.5 flex-shrink-0">
                 <button
                   onClick={() => handleQuantityChange(item.barcode, -1)}
-                  className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-gray-200 rounded-full flex justify-center items-center hover:bg-gray-300 text-[10px] xs:text-xs sm:text-xs md:text-sm"
+                  className="w-5 h-5 bg-gray-200 rounded-full flex justify-center items-center hover:bg-gray-300 text-xs"
                 >
                   -
                 </button>
-                <span className="font-semibold text-[10px] xs:text-xs sm:text-xs md:text-sm">{item.quantity}</span>
+                <span className="font-semibold text-xs w-4 text-center">{item.quantity}</span>
                 <button
                   onClick={() => handleQuantityChange(item.barcode, 1)}
-                  className="w-4 h-4 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 bg-gray-200 rounded-full flex justify-center items-center hover:bg-gray-300 text-[10px] xs:text-xs sm:text-xs md:text-sm"
+                  className="w-5 h-5 bg-gray-200 rounded-full flex justify-center items-center hover:bg-gray-300 text-xs"
                 >
                   +
                 </button>
               </div>
-              <p className="font-semibold font-sans text-blackColor text-[10px] xs:text-xs sm:text-xs md:text-sm flex-shrink-0">
+              <p className="font-semibold font-sans text-blackColor text-xs w-14 text-right flex-shrink-0">
                 ${(item.price * item.quantity).toFixed(2)}
               </p>
             </div>
@@ -374,108 +374,108 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
 
       {/* Billing Section */}
       {cartItems.length > 0 && (
-        <div className="mt-auto pt-2 xs:pt-2 sm:pt-2.5 md:pt-3 pr-1 xs:pr-1 sm:pr-1.5 md:pr-2 pl-1 xs:pl-1 sm:pl-1.5 md:pl-2 border-t border-gray-200">
+        <div className="mt-auto pt-3 pr-1 pl-1 border-t border-gray-200">
           {/* Tax */}
-          <div className="flex justify-between text-[10px] xs:text-xs sm:text-xs md:text-sm font-semibold mb-0.5 xs:mb-0.5 sm:mb-1 md:mb-1.5">
+          <div className="flex justify-between text-xs font-semibold mb-1">
             <span>Tax</span>
             <span>${tax.toFixed(2)}</span>
           </div>
-          <div className="border-b border-red-300 my-0.5 xs:my-0.5 sm:my-1 md:my-1.5"></div>
+          <div className="border-b border-red-300 my-1"></div>
 
           {/* Subtotal */}
-          <div className="flex justify-between text-[10px] xs:text-xs sm:text-xs md:text-sm font-semibold mb-0.5 xs:mb-0.5 sm:mb-1 md:mb-1.5">
+          <div className="flex justify-between text-xs font-semibold mb-1">
             <span>Subtotal</span>
             <span>${subtotal.toFixed(2)}</span>
           </div>
-          <div className="border-b border-red-300 my-0.5 xs:my-0.5 sm:my-1 md:my-1.5"></div>
+          <div className="border-b border-red-300 my-1"></div>
 
           {/* Discount */}
-          <div className="flex justify-between items-center text-[10px] xs:text-xs sm:text-xs md:text-sm font-semibold mb-0.5 xs:mb-0.5 sm:mb-1 md:mb-1.5">
+          <div className="flex justify-between items-center text-xs font-semibold mb-1">
             <span className="whitespace-nowrap">Discount ({parsedDiscount}%)</span>
-            <div className="flex items-center gap-0.5 xs:gap-0.5 sm:gap-1 md:gap-1.5 ml-1 xs:ml-1 sm:ml-1.5 md:ml-2">
+            <div className="flex items-center gap-1 ml-1">
               <input
                 type="text"
                 value={discountPercentage}
                 onChange={handleDiscountChange}
                 onBlur={handleDiscountBlur}
-                className="w-6 xs:w-6 sm:w-8 md:w-10 lg:w-12 p-0.5 xs:p-0.5 sm:p-0.5 md:p-1 border border-red-300 rounded-md text-center text-[8px] xs:text-[10px] sm:text-xs md:text-sm"
+                className="w-10 p-0.5 border border-red-300 rounded-md text-center text-xs"
                 placeholder="2"
               />
-              <span className="text-red-500 text-[8px] xs:text-[10px] sm:text-xs md:text-sm whitespace-nowrap">
+              <span className="text-red-500 text-xs whitespace-nowrap">
                 -${discountAmount.toFixed(2)}
               </span>
             </div>
           </div>
-          <div className="border-b border-red-300 my-0.5 xs:my-0.5 sm:my-1 md:my-1.5"></div>
+          <div className="border-b border-red-300 my-1"></div>
 
           {/* Total Amount */}
-          <div className="flex justify-between font-semibold text-[10px] xs:text-xs sm:text-xs md:text-sm mt-0.5 xs:mt-0.5 sm:mt-1 md:mt-1.5">
+          <div className="flex justify-between font-semibold text-xs mt-1">
             <span>Total Amount</span>
             <span>${totalAmount.toFixed(2)}</span>
           </div>
-          <div className="border-b border-red-300 my-0.5 xs:my-0.5 sm:my-1 md:my-1.5"></div>
+          <div className="border-b border-red-300 my-1"></div>
 
           {/* Payment Method */}
-          <div className="flex justify-between items-center font-semibold text-[10px] xs:text-xs sm:text-xs md:text-sm mt-0.5 xs:mt-0.5 sm:mt-1 md:mt-1.5">
+          <div className="flex justify-between items-center font-semibold text-xs mt-1">
             <span>Payment Method</span>
-            <div className="flex gap-1 xs:gap-1 sm:gap-1.5 md:gap-2">
-              <label className="flex items-center gap-0.5 xs:gap-0.5 sm:gap-0.5 md:gap-1 cursor-pointer">
+            <div className="flex gap-2">
+              <label className="flex items-center gap-0.5 cursor-pointer">
                 <input
                   type="radio"
                   name="paymentMethod"
                   value="cash"
                   checked={paymentMethod === "cash"}
                   onChange={() => handlePaymentMethodChange("cash")}
-                  className="accent-red-500 w-2.5 h-2.5 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5"
+                  className="accent-red-500 w-3 h-3"
                 />
-                <span className="text-[8px] xs:text-[10px] sm:text-xs md:text-sm">Cash</span>
+                <span className="text-xs">Cash</span>
               </label>
-              <label className="flex items-center gap-0.5 xs:gap-0.5 sm:gap-0.5 md:gap-1 cursor-pointer">
+              <label className="flex items-center gap-0.5 cursor-pointer">
                 <input
                   type="radio"
                   name="paymentMethod"
                   value="card"
                   checked={paymentMethod === "card"}
                   onChange={() => handlePaymentMethodChange("card")}
-                  className="accent-red-500 w-2.5 h-2.5 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5"
+                  className="accent-red-500 w-3 h-3"
                 />
-                <span className="text-[8px] xs:text-[10px] sm:text-xs md:text-sm">Card</span>
+                <span className="text-xs">Card</span>
               </label>
             </div>
           </div>
-          <div className="border-b border-red-300 my-0.5 xs:my-0.5 sm:my-1 md:my-1.5"></div>
+          <div className="border-b border-red-300 my-1"></div>
 
           {/* Received Amount */}
-          <div className="flex justify-between items-center font-semibold text-[10px] xs:text-xs sm:text-xs md:text-sm mt-0.5 xs:mt-0.5 sm:mt-1 md:mt-1.5">
+          <div className="flex justify-between items-center font-semibold text-xs mt-1">
             <span>Received Amount</span>
             <input
               type="number"
               value={receivedAmount}
               onChange={handleReceivedAmountChange}
-              className="w-14 xs:w-14 sm:w-16 md:w-20 lg:w-24 p-0.5 xs:p-0.5 sm:p-0.5 md:p-1 border border-red-300 rounded-md text-[8px] xs:text-[10px] sm:text-xs md:text-sm"
+              className="w-16 p-0.5 border border-red-300 rounded-md text-xs"
               min="0"
               step="0.01"
             />
           </div>
-          <div className="border-b border-red-300 my-0.5 xs:my-0.5 sm:my-1 md:my-1.5"></div>
+          <div className="border-b border-red-300 my-1"></div>
 
           {/* Payback */}
           {receivedAmount && payback !== undefined && (
             <>
-              <div className="flex justify-between font-semibold text-[10px] xs:text-xs sm:text-xs md:text-sm mt-1 xs:mt-1 sm:mt-1.5 md:mt-2">
+              <div className="flex justify-between font-semibold text-xs mt-1">
                 <span>Payback</span>
                 <span className={payback < 0 ? "text-red-500" : "text-green-500"}>
                   ${payback.toFixed(2)}
                 </span>
               </div>
-              <div className="border-b border-red-300 my-0.5 xs:my-0.5 sm:my-1 md:my-1.5"></div>
+              <div className="border-b border-red-300 my-1"></div>
             </>
           )}
 
           {/* Print Button */}
           <button 
             onClick={handlePrint}
-            className="w-full bg-red-500 text-white py-1.5 xs:py-1.5 sm:py-2 md:py-2.5 lg:py-3 rounded-lg xs:rounded-lg sm:rounded-xl md:rounded-xl mt-2 xs:mt-2 sm:mt-2.5 md:mt-3 hover:bg-red-600 transition text-[10px] xs:text-xs sm:text-xs md:text-sm"
+            className="w-full bg-red-500 text-white py-2 rounded-lg mt-2 hover:bg-red-600 transition text-sm"
           >
             Print Receipt
           </button>

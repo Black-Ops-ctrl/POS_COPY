@@ -176,30 +176,30 @@ const ProductGrid = ({ onProductSelect, searchTerm }) => {
 
   return (
     <div className="w-full">
-      <h2 className="font-semibold font-sans mb-2 sm:mb-3 md:mb-4 text-xs sm:text-sm md:text-base px-2 sm:px-4 lg:px-6">
+      <h2 className="font-semibold font-sans mb-4 text-xs sm:text-sm md:text-base px-1 sm:px-2">
         Total Products {searchTerm && `(Found: ${filteredProducts.length})`}
       </h2>
 
       {filteredProducts.length === 0 ? (
-        <div className="text-center py-8 sm:py-12 md:py-16 px-2 sm:px-4 lg:px-6">
-          <p className="text-greyColor text-xs sm:text-sm md:text-base">No Products Found "{searchTerm}"</p>
+        <div className="text-center py-4 sm:py-6 px-1 sm:px-2">
+          <p className="text-greyColor text-xs sm:text-sm">No Products Found "{searchTerm}"</p>
         </div>
       ) : (
         <div className="grid 
           grid-cols-2 
-          xs:grid-cols-2 
-          sm:grid-cols-3 
-          md:grid-cols-4 
+          xs:grid-cols-1 
+          sm:grid-cols-2 
+          md:grid-cols-3 
           lg:grid-cols-5 
-          xl:grid-cols-6 
-          2xl:grid-cols-7
-          gap-2 xs:gap-1.5 sm:gap-2 md:gap-3 lg:gap-4 xl:gap-5
-          justify-center
+          xl:grid-cols-5 
+          2xl:grid-cols-6
+          gap-1 sm:gap-1.5 md:gap-2
+          justify-items-center
           w-full
-          px-2 sm:px-4 lg:px-6
+          px-1 sm:px-2
         ">
           {filteredProducts.map((item, index) => (
-            <div key={item.barcode || index} className="w-full max-w-[220px] mx-auto">
+            <div key={item.barcode || index}>
               <ProductCard 
                 title={item.title}
                 price={item.price}

@@ -9,21 +9,21 @@ const ProductCard = ({ image, title, price, desc, barcode, onProductClick }) => 
   };
 
   return (
-    <div 
+    <div
       onClick={handleClick}
-      className="bg-lightGreyColor rounded-xl p-2 sm:p-2 md:p-2 shadow-sm hover:shadow-lg transition cursor-pointer w-full"
+      className="bg-lightGreyColor rounded-xl p-2 shadow-sm hover:shadow-lg transition cursor-pointer w-48 h-64" // Reduced padding, width, and height
     >
       <img
         src={image}
         alt={title}
-        className="h-24 sm:h-24 md:h-28 lg:h-32 xl:h-36 w-full object-cover rounded-xl mb-2 sm:mb-3 md:mb-4"
+        className="w-full h-32 object-cover rounded-xl mb-2" // Reduced image height
       />
 
-      <h3 className="font-semibold font-sans text-sm sm:text-base md:text-md truncate">{title}</h3>
+      <h3 className="font-semibold font-sans text-sm truncate">{title}</h3>
       {desc && (
-        <p className="text-xs sm:text-sm text-gray-500 mt-0.5 sm:mt-1 truncate">{desc}</p>
+        <p className="text-xs text-gray-500 mt-1 truncate">{desc}</p>
       )}
-      <p className="text-blackColor font-semibold text-sm sm:text-base md:text-md mt-0.5 sm:mt-1">
+      <p className="text-blackColor font-semibold text-sm mt-1">
         ${price}
       </p>
     </div>
