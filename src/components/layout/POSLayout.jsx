@@ -93,8 +93,8 @@ const POSLayout = () => {
               />
             </div>
 
-            {/* Order Summary - Fixed width on larger screens */}
-            <div className="w-72 md:w-80 lg:w-72 xl:w-80 2xl:w-96 flex-shrink-0 h-full overflow-hidden">
+            {/* Order Summary */}
+            <div className="w-full md:w-80 lg:w-72 xl:w-80 2xl:w-96 flex-shrink-0 h-full overflow-hidden">
                 <OrderSummary 
                 scannedBarcode={scannedBarcode}
                 onBarcodeProcessed={handleBarcodeProcessed}
