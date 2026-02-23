@@ -24,7 +24,7 @@ export const printReceipt = (receiptData) => {
   // Create a new window for printing
   const printWindow = window.open('', '_blank');
   
-  // Generate receipt HTML - FIXED padding issue
+  // Generate receipt HTML with fixed width issues
   const receiptHTML = `
     <!DOCTYPE html>
     <html>
@@ -39,7 +39,7 @@ export const printReceipt = (receiptData) => {
           
           body {
             margin: 0;
-            padding: 1mm; /* REDUCED from 4mm to 1mm */
+            padding: 3mm;
             width: 80mm;
             font-family: 'Courier New', monospace;
             font-size: 11px;
@@ -48,18 +48,18 @@ export const printReceipt = (receiptData) => {
             box-sizing: border-box;
           }
           
-          /* Main container - USE FULL WIDTH */
+          /* Main container - INCREASED max-width */
           .receipt {
             width: 100%;
-            max-width: 78mm; /* Keep this */
+            max-width: 77mm; /* Increased from 74mm */
             margin: 0 auto;
           }
           
           /* Header section */
           .shop-header {
             text-align: center;
-            margin-bottom: 3px;
-            padding-bottom: 3px;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
           }
           
           .shop-name {
@@ -72,7 +72,7 @@ export const printReceipt = (receiptData) => {
           .shop-details {
             font-size: 11px;
             font-weight: bold;
-            line-height: 1.2;
+            line-height: 1.3;
           }
           
           /* Receipt title */
@@ -82,19 +82,19 @@ export const printReceipt = (receiptData) => {
             font-size: 14px;
             border-top: 2px solid #000;
             border-bottom: 2px solid #000;
-            padding: 4px 0;
-            margin: 5px 0;
+            padding: 6px 0;
+            margin: 10px 0;
             text-transform: uppercase;
             letter-spacing: 2px;
           }
           
-          /* Info rows - REMOVED margin-left */
+          /* Info rows - FIXED for time, inv, fbr */
           .info-row {
             display: flex;
             justify-content: space-between;
             font-size: 11px;
             font-weight: bold;
-            padding: 1px 0;
+            padding: 2px 0;
             width: 100%;
           }
           
@@ -106,44 +106,44 @@ export const printReceipt = (receiptData) => {
           .info-row span:last-child {
             white-space: nowrap;
             text-align: right;
-            /* REMOVED margin-left: 10px */
+            margin-left: 10px; /* Add space between */
           }
           
           .invoice-section {
-            padding: 1px 0;
-            margin: 3px 0;
+            padding: 2px 0;
+            margin: 5px 0;
             font-size: 11px;
             font-weight: bold;
             width: 100%;
           }
           
-          /* Items table - OPTIMIZED widths */
+          /* Items table - ADJUSTED widths */
           .items-table {
             width: 100%;
-            margin: 5px 0;
+            margin: 10px 0;
             border-collapse: collapse;
             font-weight: bold;
-            table-layout: fixed;
+            table-layout: fixed; /* Fixed layout for better control */
           }
           
           .items-table th {
             font-weight: 900;
             border-top: 2px solid #000;
             border-bottom: 2px solid #000;
-            padding: 4px 0;
+            padding: 5px 0;
             font-size: 11px;
             text-transform: uppercase;
           }
           
           .items-table td {
-            padding: 2px 0;
+            padding: 3px 0;
             font-size: 11px;
             font-weight: bold;
           }
           
           .col-desc {
             text-align: left;
-            width: 45%; /* Reduced */
+            width: 50%; /* Reduced to give more space to price */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -158,24 +158,24 @@ export const printReceipt = (receiptData) => {
           
           .col-price {
             text-align: right;
-            width: 40%; /* Increased */
+            width: 35%; /* Increased for price */
             font-weight: bold;
             white-space: nowrap;
-            padding-right: 0; /* REMOVED padding-right */
+            padding-right: 2px;
           }
           
-          /* Totals section - OPTIMIZED widths */
+          /* Totals section - ADJUSTED widths */
           .totals-section {
-            margin-top: 5px;
+            margin-top: 10px;
             border-top: 2px solid #000;
-            padding-top: 5px;
+            padding-top: 8px;
             width: 100%;
           }
           
           .total-row {
             display: flex;
             justify-content: space-between;
-            padding: 2px 0;
+            padding: 3px 0;
             font-size: 11px;
             font-weight: bold;
             width: 100%;
@@ -186,46 +186,46 @@ export const printReceipt = (receiptData) => {
             font-size: 14px;
             border-top: 2px solid #000;
             border-bottom: 2px solid #000;
-            padding: 6px 0;
-            margin: 5px 0;
+            padding: 8px 0;
+            margin: 8px 0;
           }
           
           .total-label {
             text-align: left;
-            width: 45%; /* Reduced */
+            width: 50%; /* Reduced */
             font-weight: bold;
             white-space: nowrap;
           }
           
           .total-value {
             text-align: right;
-            width: 55%; /* Increased */
+            width: 50%; /* Increased */
             font-family: 'Courier New', monospace;
             font-weight: 900;
             white-space: nowrap;
           }
           
-          /* Payment section - OPTIMIZED for cash/card */
+          /* Payment section - FIXED for cash/card */
           .payment-row {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            padding: 5px 0;
             font-size: 12px;
             font-weight: bold;
             border-bottom: 2px solid #000;
-            margin-top: 3px;
+            margin-top: 5px;
             width: 100%;
           }
           
           .payment-label {
             text-align: left;
-            width: 45%; /* Reduced */
+            width: 50%; /* Reduced */
             white-space: nowrap;
           }
           
           .payment-value {
             text-align: right;
-            width: 55%; /* Increased */
+            width: 50%; /* Increased */
             font-weight: 900;
             white-space: nowrap;
             text-transform: uppercase;
@@ -236,7 +236,7 @@ export const printReceipt = (receiptData) => {
             text-align: center;
             font-weight: 900;
             font-size: 16px;
-            margin: 10px 0 3px 0;
+            margin: 15px 0 5px 0;
             text-transform: uppercase;
             letter-spacing: 3px;
           }
@@ -244,18 +244,18 @@ export const printReceipt = (receiptData) => {
           /* Manual cut marker */
           .cut-line {
             text-align: center;
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 10px;
             font-weight: bold;
             color: #000;
             border-top: 2px solid #000;
-            padding-top: 3px;
+            padding-top: 5px;
             letter-spacing: 2px;
           }
           
           /* Tear space */
           .tear-space {
-            height: 3mm;
+            height: 4mm;
           }
           
           /* Utility classes */
@@ -278,7 +278,7 @@ export const printReceipt = (receiptData) => {
             CASH RECEIPT
           </div>
 
-          <!-- Date and Invoice Info - REMOVED extra spacing -->
+          <!-- Date and Invoice Info - FIXED spacing -->
           <div class="info-row">
             <span>Date: ${formattedDate}</span>
             <span>${formattedTime}</span>
@@ -306,7 +306,7 @@ export const printReceipt = (receiptData) => {
             </thead>
             <tbody>
               ${cartItems.map(item => {
-                const itemName = item.title.length > 16 ? item.title.substring(0, 14) + '..' : item.title;
+                const itemName = item.title.length > 18 ? item.title.substring(0, 16) + '..' : item.title;
                 return `
                   <tr>
                     <td class="col-desc" title="${item.title}">${itemName}</td>
@@ -341,7 +341,7 @@ export const printReceipt = (receiptData) => {
               <span class="total-value">$${totalAmount.toFixed(2)}</span>
             </div>
 
-            <!-- PAYMENT METHOD - Will fit now -->
+            <!-- PAYMENT METHOD - FIXED width -->
             <div class="payment-row">
               <span class="payment-label">PAYMENT METHOD</span>
               <span class="payment-value">${paymentMethod.toUpperCase()}</span>
