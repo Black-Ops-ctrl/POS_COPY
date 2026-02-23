@@ -24,7 +24,7 @@ export const printReceipt = (receiptData) => {
   // Create a new window for printing
   const printWindow = window.open('', '_blank');
   
-  // Generate receipt HTML with minimal lines
+  // Generate receipt HTML with fixed width issues
   const receiptHTML = `
     <!DOCTYPE html>
     <html>
@@ -48,14 +48,14 @@ export const printReceipt = (receiptData) => {
             box-sizing: border-box;
           }
           
-          /* Main container */
+          /* Main container - INCREASED max-width */
           .receipt {
             width: 100%;
-            max-width: 74mm;
+            max-width: 77mm; /* Increased from 74mm */
             margin: 0 auto;
           }
           
-          /* Header section - NO bottom border */
+          /* Header section */
           .shop-header {
             text-align: center;
             margin-bottom: 5px;
@@ -75,7 +75,7 @@ export const printReceipt = (receiptData) => {
             line-height: 1.3;
           }
           
-          /* Receipt title - ONLY top and bottom borders */
+          /* Receipt title */
           .receipt-title {
             text-align: center;
             font-weight: 900;
@@ -88,13 +88,25 @@ export const printReceipt = (receiptData) => {
             letter-spacing: 2px;
           }
           
-          /* Info rows - NO borders */
+          /* Info rows - FIXED for time, inv, fbr */
           .info-row {
             display: flex;
             justify-content: space-between;
             font-size: 11px;
             font-weight: bold;
             padding: 2px 0;
+            width: 100%;
+          }
+          
+          .info-row span:first-child {
+            white-space: nowrap;
+            text-align: left;
+          }
+          
+          .info-row span:last-child {
+            white-space: nowrap;
+            text-align: right;
+            margin-left: 10px; /* Add space between */
           }
           
           .invoice-section {
@@ -102,14 +114,16 @@ export const printReceipt = (receiptData) => {
             margin: 5px 0;
             font-size: 11px;
             font-weight: bold;
+            width: 100%;
           }
           
-          /* Items table - MINIMAL borders */
+          /* Items table - ADJUSTED widths */
           .items-table {
             width: 100%;
             margin: 10px 0;
             border-collapse: collapse;
             font-weight: bold;
+            table-layout: fixed; /* Fixed layout for better control */
           }
           
           .items-table th {
@@ -125,16 +139,14 @@ export const printReceipt = (receiptData) => {
             padding: 3px 0;
             font-size: 11px;
             font-weight: bold;
-            /* NO bottom border on items */
           }
           
           .col-desc {
             text-align: left;
-            width: 55%;
+            width: 50%; /* Reduced to give more space to price */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 40mm;
             font-weight: bold;
           }
           
@@ -146,16 +158,18 @@ export const printReceipt = (receiptData) => {
           
           .col-price {
             text-align: right;
-            width: 30%;
+            width: 35%; /* Increased for price */
             font-weight: bold;
             white-space: nowrap;
+            padding-right: 2px;
           }
           
-          /* Totals section - MINIMAL borders */
+          /* Totals section - ADJUSTED widths */
           .totals-section {
             margin-top: 10px;
-            border-top: 2px solid #000; /* Only top border */
+            border-top: 2px solid #000;
             padding-top: 8px;
+            width: 100%;
           }
           
           .total-row {
@@ -164,7 +178,7 @@ export const printReceipt = (receiptData) => {
             padding: 3px 0;
             font-size: 11px;
             font-weight: bold;
-            /* NO borders */
+            width: 100%;
           }
           
           .total-row.final {
@@ -178,45 +192,46 @@ export const printReceipt = (receiptData) => {
           
           .total-label {
             text-align: left;
-            width: 55%;
+            width: 50%; /* Reduced */
             font-weight: bold;
             white-space: nowrap;
           }
           
           .total-value {
             text-align: right;
-            width: 45%;
+            width: 50%; /* Increased */
             font-family: 'Courier New', monospace;
             font-weight: 900;
             white-space: nowrap;
           }
           
-          /* Payment section - MINIMAL borders */
+          /* Payment section - FIXED for cash/card */
           .payment-row {
             display: flex;
             justify-content: space-between;
             padding: 5px 0;
             font-size: 12px;
             font-weight: bold;
-            border-bottom: 2px solid #000; /* Only bottom border */
+            border-bottom: 2px solid #000;
             margin-top: 5px;
+            width: 100%;
           }
           
           .payment-label {
             text-align: left;
-            width: 55%;
+            width: 50%; /* Reduced */
             white-space: nowrap;
           }
           
           .payment-value {
             text-align: right;
-            width: 45%;
+            width: 50%; /* Increased */
             font-weight: 900;
             white-space: nowrap;
             text-transform: uppercase;
           }
           
-          /* Footer - NO borders */
+          /* Footer */
           .thank-you {
             text-align: center;
             font-weight: 900;
@@ -226,7 +241,7 @@ export const printReceipt = (receiptData) => {
             letter-spacing: 3px;
           }
           
-          /* Manual cut marker - ONLY cut line */
+          /* Manual cut marker */
           .cut-line {
             text-align: center;
             margin-top: 15px;
@@ -247,30 +262,26 @@ export const printReceipt = (receiptData) => {
           .font-extra-bold {
             font-weight: 900;
           }
-          
-          .text-center { text-align: center; }
-          .text-left { text-align: left; }
-          .text-right { text-align: right; }
         </style>
       </head>
       <body>
         <div class="receipt">
-          <!-- Shop Header - NO lines -->
+          <!-- Shop Header -->
           <div class="shop-header">
             <div class="shop-name">${shopName}</div>
             <div class="shop-details">${shopAddress}</div>
             <div class="shop-details">Tel: ${shopPhone}</div>
           </div>
 
-          <!-- Receipt Title - WITH top and bottom lines -->
+          <!-- Receipt Title -->
           <div class="receipt-title">
             CASH RECEIPT
           </div>
 
-          <!-- Date and Invoice Info - NO lines -->
+          <!-- Date and Invoice Info - FIXED spacing -->
           <div class="info-row">
             <span>Date: ${formattedDate}</span>
-            <span>Time: ${formattedTime}</span>
+            <span>${formattedTime}</span>
           </div>
 
           <div class="invoice-section">
@@ -284,7 +295,7 @@ export const printReceipt = (receiptData) => {
             </div>
           </div>
 
-          <!-- Items Table - ONLY header has lines, items have NO lines -->
+          <!-- Items Table -->
           <table class="items-table">
             <thead>
               <tr>
@@ -295,7 +306,7 @@ export const printReceipt = (receiptData) => {
             </thead>
             <tbody>
               ${cartItems.map(item => {
-                const itemName = item.title.length > 20 ? item.title.substring(0, 18) + '..' : item.title;
+                const itemName = item.title.length > 18 ? item.title.substring(0, 16) + '..' : item.title;
                 return `
                   <tr>
                     <td class="col-desc" title="${item.title}">${itemName}</td>
@@ -307,9 +318,8 @@ export const printReceipt = (receiptData) => {
             </tbody>
           </table>
 
-          <!-- Totals Section - MINIMAL lines -->
+          <!-- Totals Section -->
           <div class="totals-section">
-            <!-- NO line above subtotal -->
             <div class="total-row">
               <span class="total-label">Subtotal</span>
               <span class="total-value">$${subtotal.toFixed(2)}</span>
@@ -325,13 +335,13 @@ export const printReceipt = (receiptData) => {
               <span class="total-value">-$${discountAmount.toFixed(2)}</span>
             </div>
 
-            <!-- FINAL TOTAL with top and bottom lines -->
+            <!-- FINAL TOTAL -->
             <div class="total-row final">
               <span class="total-label">TOTAL</span>
               <span class="total-value">$${totalAmount.toFixed(2)}</span>
             </div>
 
-            <!-- PAYMENT METHOD with bottom line only -->
+            <!-- PAYMENT METHOD - FIXED width -->
             <div class="payment-row">
               <span class="payment-label">PAYMENT METHOD</span>
               <span class="payment-value">${paymentMethod.toUpperCase()}</span>
@@ -352,12 +362,12 @@ export const printReceipt = (receiptData) => {
             ` : ''}
           </div>
 
-          <!-- Thank You Message - NO lines -->
+          <!-- Thank You Message -->
           <div class="thank-you">
             THANK YOU!
           </div>
           
-          <!-- ONLY cut line at the bottom -->
+          <!-- Cut line -->
           <div class="cut-line">
             • • • • • CUT HERE • • • • •
           </div>
