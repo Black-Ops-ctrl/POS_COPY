@@ -39,7 +39,7 @@ export const printReceipt = (receiptData) => {
           
           body {
             margin: 0;
-            padding: 1mm;
+            padding: 4mm;
             width: 80mm;
             font-family: 'Courier New', monospace;
             font-size: 11px;
@@ -51,7 +51,7 @@ export const printReceipt = (receiptData) => {
           /* Main container - INCREASED max-width */
           .receipt {
             width: 100%;
-            max-width: 80mm; /* Increased from 74mm */
+            max-width: 78mm; /* Increased from 74mm */
             margin: 0 auto;
           }
           
