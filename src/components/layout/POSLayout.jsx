@@ -3,8 +3,6 @@ import Sidebar from "./Sidebar";
 import OrderSummary from "../common/OrderSummary";
 import TopBar from "../common/TopBar";
 import ProductGrid from "../common/ProductGrid";
-
-// Import all products for the Enter key feature
 import thai from "../../assets/png/img_categoryFive.webp";
 import salmon from "../../assets/png/img_categoryOne.webp";
 import healthy from "../../assets/png/img_categoryTwo.webp";
@@ -72,11 +70,10 @@ const POSLayout = () => {
       <div className="bg-white rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl h-full flex flex-col lg:flex-row overflow-hidden">
         {/* Sidebar - Fixed for all screens */}
         <Sidebar />
-
         {/* Main Content Area - Takes remaining space */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
           {/* TopBar Section */}
-          <div className="p-3 sm:p-4 md:p-5 pb-2 md:pb-3">
+          <div className="p-2 sm:p-3 md:p-4 lg:p-5 pb-1 sm:pb-2 md:pb-2 lg:pb-3">
             <TopBar 
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -86,19 +83,19 @@ const POSLayout = () => {
             />
           </div>
 
-          {/* Product Grid and Order Summary - Flex row on larger screens */}
-          <div className="flex-1 flex flex-col lg:flex-row min-h-0 px-3 sm:px-4 md:px-5 pb-3 sm:pb-4 md:pb-5 gap-4">
+          {/* Product Grid and Order Summary */}
+          <div className="flex-1 flex flex-col lg:flex-row min-h-0 px-3 sm:px-4 md:px-5 pb-3 sm:pb-4 md:pb-5 gap-4 overflow-hidden">
             {/* Product Grid - Takes remaining space */}
-            <div className="flex-1 min-h-0 min-w-0">
+            <div className="flex-1 min-h-0 min-w-0 overflow-hidden">
               <ProductGrid 
                 onProductSelect={handleProductSelect}
                 searchTerm={searchTerm}
               />
             </div>
 
-            {/* Order Summary - Fixed width on larger screens, full width on mobile */}
-            <div className="lg:w-70 xl:w-90 flex-shrink-0">
-              <OrderSummary 
+            {/* Order Summary - Fixed width on larger screens */}
+            <div className="w-full sm:w-full md:w-80 lg:w-72 xl:w-80 2xl:w-96 flex-shrink-0 h-full overflow-hidden">
+                <OrderSummary 
                 scannedBarcode={scannedBarcode}
                 onBarcodeProcessed={handleBarcodeProcessed}
               />

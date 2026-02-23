@@ -15,7 +15,6 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const scrollContainerRef = useRef(null);
 
-  // Complete product database with all 20 items
   const productDatabase = {
     "M-MARK2212010015": { 
       id: 1, 
@@ -107,55 +106,6 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
       desc: "Gluten Free", 
       price: 27.09, 
       image: healthy 
-    },
-    "BIBIM9012": { 
-      id: 14, 
-      title: "Bibimbap Rice Bowl", 
-      desc: "With Tofu", 
-      price: 27.09, 
-      image: bibimbap 
-    },
-    "GBEEF789123": { 
-      id: 15, 
-      title: "Golden Beef Rice Bowl", 
-      desc: "Medium Rare", 
-      price: 27.09, 
-      image: beef 
-    },
-    "THAI4TH567": { 
-      id: 16, 
-      title: "Thai Rice Bowl", 
-      desc: "Extra Vegetables", 
-      price: 27.09, 
-      image: thai 
-    },
-    "SALM4TH890": { 
-      id: 17, 
-      title: "Smoke Salmon Rice Bowl", 
-      desc: "No Rice", 
-      price: 27.09, 
-      image: salmon 
-    },
-    "HEALTH9012": { 
-      id: 18, 
-      title: "Healthy Rice Bowl", 
-      desc: "Low Carb", 
-      price: 27.09, 
-      image: healthy 
-    },
-    "BIBIM3456": { 
-      id: 19, 
-      title: "Bibimbap Rice Bowl", 
-      desc: "Spicy Sauce", 
-      price: 27.09, 
-      image: bibimbap 
-    },
-    "GBEEF567890": { 
-      id: 20, 
-      title: "Golden Beef Rice Bowl", 
-      desc: "Extra Beef", 
-      price: 27.09, 
-      image: beef 
     },
   };
 
@@ -262,7 +212,6 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
   const totalAfterDiscount = subtotal - discountAmount;
   const totalAmount = totalAfterDiscount + tax;
   const payback = receivedAmount && parseFloat(receivedAmount) - totalAmount;
-
   const isAnySelected = cartItems.some((item) => item.selected);
   const isAllSelected = cartItems.length > 0 && cartItems.every((item) => item.selected);
 
@@ -296,132 +245,135 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
   };
 
   return (
-    <div className="bg-gray-50 rounded-xl h-full flex flex-col overflow-hidden border border-gray-200">
+    <div className="bg-lightGreyColor rounded-xl h-full flex flex-col overflow-hidden shadow-lg border">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 bg-white">
+      <div className="p-3 sm:p-4 border-b bg-primary">
         <div className="flex justify-between items-center">
-          <h2 className="font-semibold text-gray-800">
+          <h2 className="font-semibold text-xs sm:text-sm md:text-base text-secondary">
             Cart Items ({cartItems.length})
           </h2>
           <button
             onClick={handleDelete}
             disabled={!isAnySelected}
-            className={`p-2 rounded-lg transition-colors ${
+            className={`rounded-lg transition-colors ${
               isAnySelected 
-                ? "hover:bg-red-50 text-red-500" 
+                ? "" 
                 : "opacity-30 cursor-not-allowed"
             }`}
           >
-            <img src={deleteIcon} alt="delete" className="w-5 h-5" />
+            <img src={deleteIcon} alt="delete" className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
 
         {cartItems.length > 0 && (
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-2 mt-2 sm:mt-3">
             <input
               type="checkbox"
               checked={isAllSelected}
               onChange={handleSelectAll}
-              className="w-4 h-4 accent-red-500 cursor-pointer rounded"
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4 accent-red-500 cursor-pointer rounded"
             />
-            <span className="text-sm text-gray-600">Select All</span>
+            <span className="text-xs sm:text-sm text-gray-500">Delete All</span>
           </div>
         )}
       </div>
 
-      {/* Scrollable Items */}
+      {/* Scrollable Items - Fixed height with proper constraints */}
       <div 
         ref={scrollContainerRef}
-        className="flex-1 overflow-y-auto p-4 space-y-3"
+        className="flex-1 overflow-y-auto min-h-0"
+        style={{ maxHeight: "calc(100vh - 450px)" }}
       >
         {cartItems.length === 0 ? (
-          <p className="text-center text-gray-500 py-8 text-sm">
-            Your cart is empty
+          <p className="text-center text-secondary flex items-center justify-center h-full text-xs sm:text-sm p-4">
+            Empty Cart.
           </p>
         ) : (
-          cartItems.map((item) => (
-            <div key={item.barcode} className="flex items-start gap-3 bg-white p-3 rounded-lg shadow-sm">
-              <input
-                type="checkbox"
-                checked={item.selected}
-                onChange={() => handleSelect(item.barcode)}
-                className="w-4 h-4 accent-red-500 cursor-pointer rounded mt-1"
-              />
-              <img 
-                src={item.image} 
-                alt={item.title} 
-                className="w-12 h-12 rounded-lg object-cover flex-shrink-0" 
-              />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm truncate">{item.title}</p>
-                <p className="text-xs text-gray-500 truncate">{item.desc}</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <button
-                    onClick={() => handleQuantityChange(item.barcode, -1)}
-                    className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 text-sm"
-                  >
-                    -
-                  </button>
-                  <span className="text-sm font-medium w-6 text-center">{item.quantity}</span>
-                  <button
-                    onClick={() => handleQuantityChange(item.barcode, 1)}
-                    className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 text-sm"
-                  >
-                    +
-                  </button>
+          <div className="p-2 sm:p-3 space-y-2">
+            {cartItems.map((item) => (
+              <div key={item.barcode} className="flex items-center gap-2 sm:gap-3 bg-white p-2 sm:p-3 rounded-lg shadow-sm">
+                <input
+                  type="checkbox"
+                  checked={item.selected}
+                  onChange={() => handleSelect(item.barcode)}
+                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 accent-red-500 cursor-pointer flex-shrink-0"
+                />
+                <img 
+                  src={item.image} 
+                  alt={item.title} 
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover flex-shrink-0" 
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-xs sm:text-sm truncate">{item.title}</p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 truncate">{item.desc}</p>
+                  <div className="flex items-center gap-1 sm:gap-2 mt-1 sm:mt-2">
+                    <button
+                      onClick={() => handleQuantityChange(item.barcode, -1)}
+                      className="w-5 h-5 sm:w-6 sm:h-6 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 text-xs sm:text-sm flex-shrink-0"
+                    >
+                      -
+                    </button>
+                    <span className="text-xs sm:text-sm font-medium w-5 sm:w-6 text-center">{item.quantity}</span>
+                    <button
+                      onClick={() => handleQuantityChange(item.barcode, 1)}
+                      className="w-5 h-5 sm:w-6 sm:h-6 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 text-xs sm:text-sm flex-shrink-0"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
+                <p className="font-bold text-red-500 text-xs sm:text-sm whitespace-nowrap ml-1">
+                  ${(item.price * item.quantity).toFixed(2)}
+                </p>
               </div>
-              <p className="font-bold text-red-500 text-sm whitespace-nowrap">
-                ${(item.price * item.quantity).toFixed(2)}
-              </p>
-            </div>
-          ))
+            ))}
+          </div>
         )}
       </div>
 
       {/* Billing Section */}
       {cartItems.length > 0 && (
-        <div className="p-4 border-t border-gray-200 bg-white space-y-3">
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
+        <div className="p-3 sm:p-4 border-t border-gray-200 bg-white space-y-2 sm:space-y-3">
+          <div className="space-y-1.5 sm:space-y-2">
+            <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-gray-600">Subtotal</span>
               <span className="font-medium">${subtotal.toFixed(2)}</span>
             </div>
             
-            <div className="flex justify-between items-center text-sm">
+            <div className="flex justify-between items-center text-xs sm:text-sm">
               <span className="text-gray-600">Discount</span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <input
                   type="text"
                   value={discountPercentage}
                   onChange={handleDiscountChange}
                   onBlur={handleDiscountBlur}
-                  className="w-12 p-1 border border-gray-300 rounded text-center text-sm"
+                  className="w-10 sm:w-12 p-1 border border-gray-300 rounded text-center text-xs sm:text-sm"
                   placeholder="2"
                 />
-                <span className="text-red-500 text-sm font-medium">
+                <span className="text-red-500 text-xs sm:text-sm font-medium">
                   -${discountAmount.toFixed(2)}
                 </span>
               </div>
             </div>
             
-            <div className="flex justify-between text-sm">
+            <div className="flex justify-between text-xs sm:text-sm">
               <span className="text-gray-600">Tax</span>
               <span className="font-medium">${tax.toFixed(2)}</span>
             </div>
             
-            <div className="border-t border-gray-200 pt-2 mt-2">
-              <div className="flex justify-between font-bold">
+            <div className="border-t border-gray-200 pt-1.5 sm:pt-2 mt-1.5 sm:mt-2">
+              <div className="flex justify-between font-bold text-sm sm:text-base">
                 <span>Total</span>
                 <span className="text-red-500">${totalAmount.toFixed(2)}</span>
               </div>
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Payment</span>
-              <div className="flex gap-3">
+              <span className="text-xs sm:text-sm text-gray-600">Payment</span>
+              <div className="flex gap-2 sm:gap-3">
                 <label className="flex items-center gap-1 cursor-pointer">
                   <input
                     type="radio"
@@ -429,9 +381,9 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
                     value="cash"
                     checked={paymentMethod === "cash"}
                     onChange={() => handlePaymentMethodChange("cash")}
-                    className="accent-red-500"
+                    className="accent-red-500 w-3.5 h-3.5 sm:w-4 sm:h-4"
                   />
-                  <span className="text-sm">Cash</span>
+                  <span className="text-xs sm:text-sm">Cash</span>
                 </label>
                 <label className="flex items-center gap-1 cursor-pointer">
                   <input
@@ -440,20 +392,20 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
                     value="card"
                     checked={paymentMethod === "card"}
                     onChange={() => handlePaymentMethodChange("card")}
-                    className="accent-red-500"
+                    className="accent-red-500 w-3.5 h-3.5 sm:w-4 sm:h-4"
                   />
-                  <span className="text-sm">Card</span>
+                  <span className="text-xs sm:text-sm">Card</span>
                 </label>
               </div>
             </div>
 
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Received</span>
+              <span className="text-xs sm:text-sm text-gray-600">Received</span>
               <input
                 type="number"
                 value={receivedAmount}
                 onChange={handleReceivedAmountChange}
-                className="w-24 p-1.5 border border-gray-300 rounded text-sm text-right"
+                className="w-20 sm:w-24 p-1 sm:p-1.5 border border-gray-300 rounded text-xs sm:text-sm text-right"
                 min="0"
                 step="0.01"
                 placeholder="0.00"
@@ -461,7 +413,7 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
             </div>
 
             {receivedAmount && payback !== undefined && (
-              <div className="flex justify-between text-sm">
+              <div className="flex justify-between text-xs sm:text-sm">
                 <span className="text-gray-600">Change</span>
                 <span className={payback < 0 ? "text-red-500" : "text-green-600 font-medium"}>
                   ${payback.toFixed(2)}
@@ -471,7 +423,7 @@ const OrderSummary = ({ scannedBarcode, onBarcodeProcessed }) => {
 
             <button 
               onClick={handlePrint}
-              className="w-full bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition-colors font-medium mt-2"
+              className="w-full bg-red-500 text-white py-2 sm:py-3 rounded-lg hover:bg-red-600 transition-colors font-medium text-sm sm:text-base mt-1 sm:mt-2"
             >
               Print Receipt
             </button>

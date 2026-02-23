@@ -11,19 +11,25 @@ const ProductCard = ({ image, title, price, desc, barcode, onProductClick }) => 
   return (
     <div
       onClick={handleClick}
-      className="bg-gray-50 rounded-xl p-3 shadow-sm hover:shadow-md transition-all cursor-pointer border border-gray-100"
+      className="bg-gray-50 rounded-xl p-2 sm:p-3 shadow-sm hover:shadow-lg transition-all cursor-pointer border border-gray-200"
     >
       <img
         src={image}
         alt={title}
-        className="w-full aspect-square object-cover rounded-lg mb-3"
+        className="w-full aspect-square object-cover rounded-lg mb-2"
       />
 
-      <h3 className="font-semibold text-gray-800 text-sm truncate">{title}</h3>
+      <h3 className="font-semibold text-gray-800 text-xs sm:text-sm md:text-base truncate">
+        {title}
+      </h3>
+      
       {desc && (
-        <p className="text-xs text-gray-500 mt-1 truncate">{desc}</p>
+        <p className="text-gray-500 mt-1 truncate text-[10px] sm:text-xs md:text-sm">
+          {desc}
+        </p>
       )}
-      <p className="text-red-500 font-bold text-base mt-2">
+      
+      <p className="text-red-500 font-semibold mt-2 text-sm sm:text-sm md:text-base lg:text-lg">
         ${price}
       </p>
     </div>

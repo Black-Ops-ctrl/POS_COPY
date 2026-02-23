@@ -6,8 +6,6 @@ const TopBar = ({ searchTerm, setSearchTerm, onSearch, onBarcodeScanned, onEnter
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm || "");
   const inputBuffer = useRef("");
   const lastTime = useRef(0);
-
-  // Global barcode scanner detection
   useEffect(() => {
     const handleKeyDown = (e) => {
       const activeElement = document.activeElement;
@@ -82,12 +80,12 @@ const TopBar = ({ searchTerm, setSearchTerm, onSearch, onBarcodeScanned, onEnter
   };
 
   return (
-    <div className="flex items-center justify-between gap-3 w-full">
+    <div className="flex items-center justify-between gap-2 sm:gap-3 w-full">
       {/* Search Bar - Responsive width */}
-      <div className="relative flex-1 max-w-md">
+      <div className="relative flex-1 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
         <Search 
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-red-500 transition-colors" 
-          size={18}
+          className="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-red-500 transition-colors" 
+          size={16}
           onClick={handleSearchClick}
         />
         <input
@@ -97,22 +95,22 @@ const TopBar = ({ searchTerm, setSearchTerm, onSearch, onBarcodeScanned, onEnter
           onChange={handleInputChange}
           onKeyDown={handleKeyPress}
           placeholder="Search or scan barcode..."
-          className="w-full pl-10 pr-4 py-2.5 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-red-300 border border-transparent focus:border-red-300 text-sm transition-all"
+          className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-2.5 rounded-full bg-gray-100 focus:outline-none focus:ring- focus:ring-gray-300 border border-transparent focus:border-gray-300 text-xs sm:text-sm placeholder:text-xs sm:placeholder:text-sm"
         />
       </div>
 
-      {/* User Info - Fixed */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-      <img
-        src={avatar}
-        alt="avatar"
-        className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full object-cover border-2 border-gray-200"
-      />
-      <div className="text-right hidden sm:block">
-        <p className="font-semibold text-sm sm:text-base whitespace-nowrap">Lauren Smith</p>
-        <p className="text-xs text-gray-400 whitespace-nowrap">Cashier</p>
+      {/* User Info - Responsive */}
+      <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <img
+          src={avatar}
+          alt="avatar"
+          className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-full object-cover border-2 border-gray-200"
+        />
+        <div className="text-right hidden xs:block">
+          <p className="font-semibold text-xs sm:text-sm md:text-base whitespace-nowrap">Lauren Smith</p>
+          <p className="text-[10px] sm:text-xs text-gray-400 whitespace-nowrap">Cashier</p>
+        </div>
       </div>
-    </div>
     </div>
   );
 };
