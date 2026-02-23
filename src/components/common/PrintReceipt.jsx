@@ -18,20 +18,19 @@ export const printReceipt = (receiptData) => {
 
   // Format date
   const currentDate = new Date();
-  const formattedDate = currentDate.toLocaleDateString();
+  const formattedDate = currentDate.toLocaleDateString('en-GB'); // DD/MM/YYYY format
   const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   // Create a new window for printing
   const printWindow = window.open('', '_blank');
   
-  // Generate receipt HTML with MAXIMUM width utilization
+  // Generate receipt HTML - FIXED version matching the image
   const receiptHTML = `
     <!DOCTYPE html>
     <html>
       <head>
         <title>Receipt</title>
         <style>
-          /* Critical printer settings */
           @page {
             margin: 0;
             size: 80mm auto;
@@ -39,43 +38,38 @@ export const printReceipt = (receiptData) => {
           
           body {
             margin: 0;
-            padding: 1.5mm 1mm; /* Minimal padding: 1mm left + 1mm right */
+            padding: 2mm;
             width: 80mm;
             font-family: 'Courier New', monospace;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             background: white;
             box-sizing: border-box;
           }
           
-          /* Main container - USE ALMOST FULL WIDTH */
           .receipt {
             width: 100%;
-            max-width: 78mm; /* 80mm - 2mm padding */
+            max-width: 74mm;
             margin: 0 auto;
           }
           
-          /* Header section */
           .shop-header {
             text-align: center;
-            margin-bottom: 3px;
-            padding-bottom: 2px;
+            margin-bottom: 5px;
           }
           
           .shop-name {
             font-weight: 900;
-            font-size: 16px;
+            font-size: 18px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
           }
           
           .shop-details {
             font-size: 11px;
-            font-weight: bold;
             line-height: 1.2;
           }
           
-          /* Receipt title */
           .receipt-title {
             text-align: center;
             font-weight: 900;
@@ -83,179 +77,123 @@ export const printReceipt = (receiptData) => {
             border-top: 2px solid #000;
             border-bottom: 2px solid #000;
             padding: 4px 0;
-            margin: 5px 0;
+            margin: 8px 0;
             text-transform: uppercase;
             letter-spacing: 1px;
           }
           
-          /* Info rows */
           .info-row {
             display: flex;
             justify-content: space-between;
-            font-size: 11px;
-            font-weight: bold;
-            padding: 1px 0;
+            padding: 2px 0;
             width: 100%;
-          }
-          
-          .info-row span:last-child {
-            white-space: nowrap;
-            text-align: right;
           }
           
           .invoice-section {
-            padding: 1px 0;
-            margin: 3px 0;
-            font-size: 11px;
-            font-weight: bold;
-            width: 100%;
-          }
-          
-          /* Items table - CRITICAL FIXES */
-          .items-table {
-            width: 100%;
+            padding: 2px 0;
             margin: 5px 0;
-            border-collapse: collapse;
-            font-weight: bold;
-            table-layout: fixed;
           }
           
-          .items-table th {
+          /* Items Header */
+          .items-header {
+            display: flex;
+            justify-content: space-between;
             font-weight: 900;
             border-top: 2px solid #000;
             border-bottom: 2px solid #000;
-            padding: 3px 0;
-            font-size: 11px;
-            text-transform: uppercase;
+            padding: 4px 0;
+            margin-top: 5px;
+            width: 100%;
           }
           
-          .items-table td {
+          .item-row {
+            display: flex;
+            justify-content: space-between;
             padding: 2px 0;
-            font-size: 11px;
-            font-weight: bold;
+            width: 100%;
           }
           
-          /* FIXED column widths - Give more space to PRICE */
-          .col-desc {
-            text-align: left;
-            width: 40%; /* Reduced to give more to price */
+          /* Fixed widths - matching the image */
+          .desc-header { width: 38mm; text-align: left; }
+          .qty-header { width: 10mm; text-align: center; }
+          .price-header { width: 24mm; text-align: right; }
+          
+          .item-desc { 
+            width: 38mm; 
+            text-align: left; 
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            font-weight: bold;
+          }
+          .item-qty { width: 10mm; text-align: center; }
+          .item-price { width: 24mm; text-align: right; }
+          
+          /* Format prices WITHOUT decimals (like in the image) */
+          .item-price, .total-value {
+            font-family: 'Courier New', monospace;
           }
           
-          .col-qty {
-            text-align: center;
-            width: 15%;
-            font-weight: bold;
-          }
-          
-          .col-price {
-            text-align: right;
-            width: 45%; /* INCREASED to show full price */
-            font-weight: bold;
-            white-space: nowrap;
-            letter-spacing: 0.2px; /* Slight spacing for numbers */
-          }
-          
-          /* Totals section - FIXED widths */
+          /* Totals Section */
           .totals-section {
-            margin-top: 5px;
+            margin-top: 10px;
             border-top: 2px solid #000;
-            padding-top: 4px;
-            width: 100%;
+            padding-top: 5px;
           }
           
           .total-row {
             display: flex;
             justify-content: space-between;
-            padding: 2px 0;
-            font-size: 11px;
-            font-weight: bold;
+            padding: 3px 0;
             width: 100%;
           }
+          
+          .total-label { width: 40mm; text-align: left; }
+          .total-value { width: 32mm; text-align: right; }
           
           .total-row.final {
             font-weight: 900;
             font-size: 14px;
             border-top: 2px solid #000;
             border-bottom: 2px solid #000;
-            padding: 5px 0;
+            padding: 6px 0;
             margin: 5px 0;
           }
           
-          .total-label {
-            text-align: left;
-            width: 40%; /* Reduced */
-            font-weight: bold;
-            white-space: nowrap;
-          }
-          
-          .total-value {
-            text-align: right;
-            width: 60%; /* INCREASED for full numbers */
-            font-family: 'Courier New', monospace;
-            font-weight: 900;
-            white-space: nowrap;
-          }
-          
-          /* Payment section - FIXED for CASH */
           .payment-row {
             display: flex;
             justify-content: space-between;
-            padding: 4px 0;
+            padding: 5px 0;
             font-size: 12px;
             font-weight: bold;
             border-bottom: 2px solid #000;
-            margin-top: 3px;
+            margin-top: 5px;
             width: 100%;
           }
           
-          .payment-label {
-            text-align: left;
-            width: 40%; /* Reduced */
-            white-space: nowrap;
-          }
+          .payment-label { width: 40mm; text-align: left; }
+          .payment-value { width: 32mm; text-align: right; text-transform: uppercase; }
           
-          .payment-value {
-            text-align: right;
-            width: 60%; /* INCREASED to show full CASH/CARD */
-            font-weight: 900;
-            white-space: nowrap;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-          }
-          
-          /* Footer */
           .thank-you {
             text-align: center;
             font-weight: 900;
-            font-size: 16px;
-            margin: 10px 0 3px 0;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-          }
-          
-          /* Manual cut marker */
-          .cut-line {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 10px;
-            font-weight: bold;
-            color: #000;
-            border-top: 2px solid #000;
-            padding-top: 3px;
+            font-size: 18px;
+            margin: 15px 0 5px 0;
             letter-spacing: 1px;
           }
           
-          /* Tear space */
-          .tear-space {
-            height: 3mm;
+          .cut-line {
+            text-align: center;
+            margin-top: 15px;
+            border-top: 2px dashed #000;
+            padding-top: 5px;
+            font-size: 10px;
           }
           
-          .font-extra-bold {
-            font-weight: 900;
+          .font-extra-bold { font-weight: 900; }
+          
+          /* Helper function to format prices without decimals when .00 */
+          .no-decimal {
+            /* This will be applied via JS formatting */
           }
         </style>
       </head>
@@ -290,55 +228,52 @@ export const printReceipt = (receiptData) => {
             </div>
           </div>
 
-          <!-- Items Table - FIXED columns -->
-          <table class="items-table">
-            <thead>
-              <tr>
-                <th class="col-desc">DESCRIPTION</th>
-                <th class="col-qty">QTY</th>
-                <th class="col-price">PRICE</th> <!-- Now full word -->
-              </tr>
-            </thead>
-            <tbody>
-              ${cartItems.map(item => {
-                // Shorter description to give more space for price
-                const itemName = item.title.length > 14 ? item.title.substring(0, 12) + '..' : item.title;
-                const itemPrice = (item.price * item.quantity).toFixed(2);
-                return `
-                  <tr>
-                    <td class="col-desc" title="${item.title}">${itemName}</td>
-                    <td class="col-qty">${item.quantity}</td>
-                    <td class="col-price">$${itemPrice}</td> <!-- Full price -->
-                  </tr>
-                `;
-              }).join('')}
-            </tbody>
-          </table>
+          <!-- Items Header -->
+          <div class="items-header">
+            <span class="desc-header">DESCRIPTION</span>
+            <span class="qty-header">QTY</span>
+            <span class="price-header">PRICE</span>
+          </div>
 
-          <!-- Totals Section -->
+          <!-- Items List - Format prices like in the image ($27. not $27.00) -->
+          ${cartItems.map(item => {
+            const itemName = item.title.length > 18 ? item.title.substring(0, 16) + '..' : item.title;
+            const itemTotal = item.price * item.quantity;
+            // Format price without decimals if it's a whole number
+            const formattedPrice = Number.isInteger(itemTotal) ? `$${itemTotal}.` : `$${itemTotal.toFixed(2)}`;
+            return `
+              <div class="item-row">
+                <span class="item-desc" title="${item.title}">${itemName}</span>
+                <span class="item-qty">${item.quantity}</span>
+                <span class="item-price">${formattedPrice}</span>
+              </div>
+            `;
+          }).join('')}
+
+          <!-- Totals Section - Format like the image -->
           <div class="totals-section">
             <div class="total-row">
               <span class="total-label">Subtotal</span>
-              <span class="total-value">$${subtotal.toFixed(2)}</span>
+              <span class="total-value">${Number.isInteger(subtotal) ? `$${subtotal}.` : `$${subtotal.toFixed(2)}`}</span>
             </div>
 
             <div class="total-row">
               <span class="total-label">Tax</span>
-              <span class="total-value">$${tax.toFixed(2)}</span>
+              <span class="total-value">${Number.isInteger(tax) ? `$${tax}.` : `$${tax.toFixed(2)}`}</span>
             </div>
 
             <div class="total-row">
               <span class="total-label">Discount (${discountPercentage}%)</span>
-              <span class="total-value">-$${discountAmount.toFixed(2)}</span>
+              <span class="total-value">-${Number.isInteger(discountAmount) ? `$${discountAmount}.` : `$${discountAmount.toFixed(2)}`}</span>
             </div>
 
             <!-- FINAL TOTAL -->
             <div class="total-row final">
               <span class="total-label">TOTAL</span>
-              <span class="total-value">$${totalAmount.toFixed(2)}</span>
+              <span class="total-value">${Number.isInteger(totalAmount) ? `$${totalAmount}.` : `$${totalAmount.toFixed(2)}`}</span>
             </div>
 
-            <!-- PAYMENT METHOD - Now shows full CASH/CARD -->
+            <!-- PAYMENT METHOD -->
             <div class="payment-row">
               <span class="payment-label">PAYMENT METHOD</span>
               <span class="payment-value">${paymentMethod.toUpperCase()}</span>
@@ -347,14 +282,14 @@ export const printReceipt = (receiptData) => {
             ${paymentMethod === "cash" && receivedAmount ? `
               <div class="total-row">
                 <span class="total-label">Cash</span>
-                <span class="total-value">$${parseFloat(receivedAmount).toFixed(2)}</span>
+                <span class="total-value">${Number.isInteger(parseFloat(receivedAmount)) ? `$${parseFloat(receivedAmount)}.` : `$${parseFloat(receivedAmount).toFixed(2)}`}</span>
               </div>
             ` : ''}
 
             ${paymentMethod === "cash" && receivedAmount && payback >= 0 ? `
               <div class="total-row" style="font-weight: 900;">
                 <span class="total-label">CHANGE</span>
-                <span class="total-value">$${payback.toFixed(2)}</span>
+                <span class="total-value">${Number.isInteger(payback) ? `$${payback}.` : `$${payback.toFixed(2)}`}</span>
               </div>
             ` : ''}
           </div>
@@ -368,56 +303,34 @@ export const printReceipt = (receiptData) => {
           <div class="cut-line">
             • • • • • CUT HERE • • • • •
           </div>
-          <div class="tear-space"></div>
         </div>
         
         <script>
           let printClicked = false;
           
           function safeClose() {
-            setTimeout(function() {
-              window.close();
-            }, 100);
+            setTimeout(() => window.close(), 100);
           }
           
-          window.onafterprint = function() {
-            printClicked = true;
-          };
+          window.onafterprint = () => printClicked = true;
           
-          window.onload = function() {
-            setTimeout(function() {
-              window.print();
-            }, 300);
-          };
+          window.onload = () => setTimeout(() => window.print(), 300);
           
-          // Detect print dialog cancellation
           let hasFocus = true;
-          
-          window.addEventListener('blur', function() {
-            hasFocus = false;
-          });
-          
-          window.addEventListener('focus', function() {
-            if (!printClicked && !hasFocus) {
-              safeClose();
-            }
+          window.addEventListener('blur', () => hasFocus = false);
+          window.addEventListener('focus', () => {
+            if (!printClicked && !hasFocus) safeClose();
             hasFocus = true;
           });
           
-          // Ctrl+W to close
-          document.addEventListener('keydown', function(e) {
+          document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 'w') {
               e.preventDefault();
               safeClose();
             }
           });
           
-          // Auto-close after 30 seconds
-          setTimeout(function() {
-            if (!window.closed) {
-              safeClose();
-            }
-          }, 30000);
+          setTimeout(() => !window.closed && safeClose(), 30000);
         </script>
       </body>
     </html>
