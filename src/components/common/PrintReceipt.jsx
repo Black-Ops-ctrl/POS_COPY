@@ -24,7 +24,7 @@ export const printReceipt = (receiptData) => {
   // Create a new window for printing
   const printWindow = window.open('', '_blank');
   
-  // Generate receipt HTML with proper formatting for thermal printer
+  // Generate receipt HTML with minimal lines
   const receiptHTML = `
     <!DOCTYPE html>
     <html>
@@ -43,6 +43,7 @@ export const printReceipt = (receiptData) => {
             width: 80mm;
             font-family: 'Courier New', monospace;
             font-size: 11px;
+            font-weight: bold;
             background: white;
             box-sizing: border-box;
           }
@@ -54,190 +55,219 @@ export const printReceipt = (receiptData) => {
             margin: 0 auto;
           }
           
-          /* Header section */
+          /* Header section - NO bottom border */
           .shop-header {
             text-align: center;
             margin-bottom: 5px;
-            border-bottom: 1px dashed #000;
             padding-bottom: 5px;
           }
           
           .shop-name {
-            font-weight: bold;
-            font-size: 14px;
+            font-weight: 900;
+            font-size: 16px;
             text-transform: uppercase;
             letter-spacing: 1px;
           }
           
           .shop-details {
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: bold;
             line-height: 1.3;
           }
           
-          /* Receipt title */
+          /* Receipt title - ONLY top and bottom borders */
           .receipt-title {
             text-align: center;
-            font-weight: bold;
-            font-size: 12px;
-            border-top: 1px dashed #000;
-            border-bottom: 1px dashed #000;
-            padding: 5px 0;
-            margin: 8px 0;
+            font-weight: 900;
+            font-size: 14px;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+            padding: 6px 0;
+            margin: 10px 0;
             text-transform: uppercase;
             letter-spacing: 2px;
           }
           
-          /* Info rows */
+          /* Info rows - NO borders */
           .info-row {
             display: flex;
             justify-content: space-between;
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: bold;
             padding: 2px 0;
           }
           
           .invoice-section {
-            background: #f5f5f5;
-            padding: 4px;
+            padding: 2px 0;
             margin: 5px 0;
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: bold;
           }
           
-          /* Items table - FIXED ALIGNMENT */
+          /* Items table - MINIMAL borders */
           .items-table {
             width: 100%;
-            margin: 8px 0;
+            margin: 10px 0;
             border-collapse: collapse;
+            font-weight: bold;
           }
           
           .items-table th {
-            font-weight: bold;
-            border-top: 1px solid #000;
-            border-bottom: 1px solid #000;
-            padding: 4px 0;
-            font-size: 10px;
+            font-weight: 900;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+            padding: 5px 0;
+            font-size: 11px;
+            text-transform: uppercase;
           }
           
           .items-table td {
             padding: 3px 0;
-            font-size: 10px;
-            border-bottom: 1px dotted #ccc;
+            font-size: 11px;
+            font-weight: bold;
+            /* NO bottom border on items */
           }
           
           .col-desc {
             text-align: left;
-            width: 60%;
+            width: 55%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 45mm;
+            max-width: 40mm;
+            font-weight: bold;
           }
           
           .col-qty {
             text-align: center;
             width: 15%;
+            font-weight: bold;
           }
           
           .col-price {
             text-align: right;
-            width: 25%;
-            padding-right: 2px;
+            width: 30%;
+            font-weight: bold;
+            white-space: nowrap;
           }
           
-          /* Totals section - FIXED ALIGNMENT */
+          /* Totals section - MINIMAL borders */
           .totals-section {
-            margin-top: 8px;
-            border-top: 1px dashed #000;
-            padding-top: 5px;
+            margin-top: 10px;
+            border-top: 2px solid #000; /* Only top border */
+            padding-top: 8px;
           }
           
           .total-row {
             display: flex;
             justify-content: space-between;
             padding: 3px 0;
-            font-size: 10px;
+            font-size: 11px;
+            font-weight: bold;
+            /* NO borders */
           }
           
-          .total-row.sub {
-            border-bottom: 1px dotted #ccc;
-          }
-  
           .total-row.final {
-            font-weight: bold;
-            font-size: 12px;
-            border-top: 1px solid #000;
-            border-bottom: 1px solid #000;
-            padding: 6px 0;
-            margin: 5px 0;
+            font-weight: 900;
+            font-size: 14px;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+            padding: 8px 0;
+            margin: 8px 0;
           }
           
           .total-label {
             text-align: left;
-            width: 60%;
+            width: 55%;
+            font-weight: bold;
+            white-space: nowrap;
           }
           
           .total-value {
             text-align: right;
-            width: 40%;
+            width: 45%;
             font-family: 'Courier New', monospace;
+            font-weight: 900;
+            white-space: nowrap;
           }
           
-          /* Payment section */
+          /* Payment section - MINIMAL borders */
           .payment-row {
             display: flex;
             justify-content: space-between;
-            padding: 3px 0;
-            font-size: 10px;
-            border-bottom: 1px dashed #000;
-            padding-bottom: 5px;
+            padding: 5px 0;
+            font-size: 12px;
+            font-weight: bold;
+            border-bottom: 2px solid #000; /* Only bottom border */
+            margin-top: 5px;
           }
           
-          /* Footer */
+          .payment-label {
+            text-align: left;
+            width: 55%;
+            white-space: nowrap;
+          }
+          
+          .payment-value {
+            text-align: right;
+            width: 45%;
+            font-weight: 900;
+            white-space: nowrap;
+            text-transform: uppercase;
+          }
+          
+          /* Footer - NO borders */
           .thank-you {
             text-align: center;
-            font-weight: bold;
-            font-size: 12px;
+            font-weight: 900;
+            font-size: 16px;
             margin: 15px 0 5px 0;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
           }
           
-          .footer-note {
-            text-align: center;
-            font-size: 8px;
-            color: #666;
-          }
-          
-          /* Manual cut marker */
+          /* Manual cut marker - ONLY cut line */
           .cut-line {
             text-align: center;
             margin-top: 15px;
-            font-size: 9px;
-            color: #666;
-            border-top: 2px dashed #999;
+            font-size: 10px;
+            font-weight: bold;
+            color: #000;
+            border-top: 2px solid #000;
             padding-top: 5px;
+            letter-spacing: 2px;
           }
           
           /* Tear space */
           .tear-space {
             height: 4mm;
           }
+          
+          /* Utility classes */
+          .font-extra-bold {
+            font-weight: 900;
+          }
+          
+          .text-center { text-align: center; }
+          .text-left { text-align: left; }
+          .text-right { text-align: right; }
         </style>
       </head>
       <body>
         <div class="receipt">
-          <!-- Shop Header -->
+          <!-- Shop Header - NO lines -->
           <div class="shop-header">
             <div class="shop-name">${shopName}</div>
             <div class="shop-details">${shopAddress}</div>
             <div class="shop-details">Tel: ${shopPhone}</div>
           </div>
 
-          <!-- Receipt Title -->
+          <!-- Receipt Title - WITH top and bottom lines -->
           <div class="receipt-title">
             CASH RECEIPT
           </div>
 
-          <!-- Date and Invoice Info -->
+          <!-- Date and Invoice Info - NO lines -->
           <div class="info-row">
             <span>Date: ${formattedDate}</span>
             <span>Time: ${formattedTime}</span>
@@ -246,26 +276,26 @@ export const printReceipt = (receiptData) => {
           <div class="invoice-section">
             <div class="info-row">
               <span>Invoice #:</span>
-              <span class="font-bold">${invoiceNo}</span>
+              <span class="font-extra-bold">${invoiceNo}</span>
             </div>
             <div class="info-row">
               <span>FBR #:</span>
-              <span class="font-bold">${fbrInvoiceNo}</span>
+              <span class="font-extra-bold">${fbrInvoiceNo}</span>
             </div>
           </div>
 
-          <!-- Items Table - Using HTML Table for Perfect Alignment -->
+          <!-- Items Table - ONLY header has lines, items have NO lines -->
           <table class="items-table">
             <thead>
               <tr>
-                <th class="col-desc">Description</th>
-                <th class="col-qty">Qty</th>
-                <th class="col-price">Price</th>
+                <th class="col-desc">DESCRIPTION</th>
+                <th class="col-qty">QTY</th>
+                <th class="col-price">PRICE</th>
               </tr>
             </thead>
             <tbody>
               ${cartItems.map(item => {
-                const itemName = item.title.length > 25 ? item.title.substring(0, 23) + '..' : item.title;
+                const itemName = item.title.length > 20 ? item.title.substring(0, 18) + '..' : item.title;
                 return `
                   <tr>
                     <td class="col-desc" title="${item.title}">${itemName}</td>
@@ -277,9 +307,10 @@ export const printReceipt = (receiptData) => {
             </tbody>
           </table>
 
-          <!-- Totals Section -->
+          <!-- Totals Section - MINIMAL lines -->
           <div class="totals-section">
-            <div class="total-row sub">
+            <!-- NO line above subtotal -->
+            <div class="total-row">
               <span class="total-label">Subtotal</span>
               <span class="total-value">$${subtotal.toFixed(2)}</span>
             </div>
@@ -294,14 +325,16 @@ export const printReceipt = (receiptData) => {
               <span class="total-value">-$${discountAmount.toFixed(2)}</span>
             </div>
 
+            <!-- FINAL TOTAL with top and bottom lines -->
             <div class="total-row final">
               <span class="total-label">TOTAL</span>
               <span class="total-value">$${totalAmount.toFixed(2)}</span>
             </div>
 
+            <!-- PAYMENT METHOD with bottom line only -->
             <div class="payment-row">
-              <span>Payment Method</span>
-              <span class="font-bold">${paymentMethod.toUpperCase()}</span>
+              <span class="payment-label">PAYMENT METHOD</span>
+              <span class="payment-value">${paymentMethod.toUpperCase()}</span>
             </div>
 
             ${paymentMethod === "cash" && receivedAmount ? `
@@ -312,24 +345,19 @@ export const printReceipt = (receiptData) => {
             ` : ''}
 
             ${paymentMethod === "cash" && receivedAmount && payback >= 0 ? `
-              <div class="total-row" style="font-weight: bold;">
-                <span class="total-label">Change</span>
+              <div class="total-row" style="font-weight: 900;">
+                <span class="total-label">CHANGE</span>
                 <span class="total-value">$${payback.toFixed(2)}</span>
               </div>
             ` : ''}
           </div>
 
-          <!-- Thank You Message -->
+          <!-- Thank You Message - NO lines -->
           <div class="thank-you">
             THANK YOU!
           </div>
-
-          <!-- Footer -->
-          <div class="footer-note">
-            designed by freepik
-          </div>
           
-          <!-- Cut Line -->
+          <!-- ONLY cut line at the bottom -->
           <div class="cut-line">
             • • • • • CUT HERE • • • • •
           </div>
@@ -364,7 +392,7 @@ export const printReceipt = (receiptData) => {
           
           window.addEventListener('focus', function() {
             if (!printClicked && !hasFocus) {
-              safeClose(); // Close immediately on cancel
+              safeClose();
             }
             hasFocus = true;
           });
