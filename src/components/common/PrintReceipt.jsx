@@ -49,7 +49,7 @@ export const printReceipt = (receiptData) => {
           
           .receipt {
             width: 100%;
-            max-width: 74mm;
+            max-width: 70mm;
             margin: 0 auto;
           }
           
@@ -116,7 +116,7 @@ export const printReceipt = (receiptData) => {
           /* Fixed widths - matching the image */
           .desc-header { width: 38mm; text-align: left; }
           .qty-header { width: 10mm; text-align: center; }
-          .price-header { width: 24mm; text-align: right; }
+          .price-header { width: 20mm; text-align: right; }
           
           .item-desc { 
             width: 38mm; 
@@ -126,7 +126,7 @@ export const printReceipt = (receiptData) => {
             text-overflow: ellipsis;
           }
           .item-qty { width: 10mm; text-align: center; }
-          .item-price { width: 24mm; text-align: right; }
+          .item-price { width: 20mm; text-align: right; }
           
           /* Format prices WITHOUT decimals (like in the image) */
           .item-price, .total-value {
@@ -148,7 +148,7 @@ export const printReceipt = (receiptData) => {
           }
           
           .total-label { width: 40mm; text-align: left; }
-          .total-value { width: 32mm; text-align: right; }
+          .total-value { width: 28mm; text-align: right; }
           
           .total-row.final {
             font-weight: 900;
@@ -171,7 +171,7 @@ export const printReceipt = (receiptData) => {
           }
           
           .payment-label { width: 40mm; text-align: left; }
-          .payment-value { width: 32mm; text-align: right; text-transform: uppercase; }
+          .payment-value { width: 28mm; text-align: right; text-transform: uppercase; }
           
           .thank-you {
             text-align: center;
