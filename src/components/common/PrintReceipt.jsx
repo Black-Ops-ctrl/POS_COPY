@@ -282,7 +282,7 @@ export const printReceipt = (receiptData) => {
             ${paymentMethod === "cash" && receivedAmount ? `
               <div class="total-row">
                 <span class="total-label">Cash</span>
-                <span class="total-value">${Number.isInteger(parseFloat(receivedAmount)) ? `$${parseFloat(receivedAmount)}.` : `$${parseFloat(receivedAmount).toFixed(2)}`}</span>
+                <span class="total-value">${Number.isInteger(parseFloat(receivedAmount)) ? `$${parseFloat(receivedAmount)}` : `$${parseFloat(receivedAmount).toFixed(2)}`}</span>
               </div>
             ` : ''}
 
